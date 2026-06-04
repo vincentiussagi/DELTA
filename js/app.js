@@ -21,12 +21,12 @@ import {
   query,
   orderBy,
   serverTimestamp,
-} from "firebase/firestore";
+} from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-} from "firebase/auth";
+} from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
 // ── Shift schedule data ──────────────────────────────────────
 // Officers in each group

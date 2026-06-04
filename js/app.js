@@ -981,9 +981,9 @@ function renderShiftPanel() {
   }
 
   grid.innerHTML = [
-    buildCard("Previous Shift", previous, false),
-    buildCard("Current Shift",  current,  true),
-    buildCard("Next Shift",     next,     false),
+    buildCard("Shift Sebelumnya", previous, false),
+    buildCard("Shift Saat Ini",  current,  true),
+    buildCard("Shift Saat ini",     next,     false),
   ].join("");
 }
 

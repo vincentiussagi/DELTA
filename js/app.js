@@ -21,6 +21,7 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  where,
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import {
   signInWithEmailAndPassword,
@@ -447,63 +448,247 @@ function routeStr(r) {
   return o && d ? `${o} → ${d}` : o || d || "—";
 }
 
+let trackUnsubscribe = null;
+
 function initTracking() {
-  const tbody = document.getElementById("trackTbody");
+  const form = document.getElementById("trackSearchForm");
+  const searchInput = document.getElementById("trackSearchId");
   const loadingEl = document.getElementById("trackLoading");
-  const searchEl = document.getElementById("trackSearch");
-  const statusFilter = document.getElementById("trackStatusFilter");
-  const countEl = document.getElementById("trackCount");
+  const errorEl = document.getElementById("trackError");
+  const errorMsgEl = document.getElementById("trackErrorMsg");
+  const resultEl = document.getElementById("trackResult");
 
-  let allRows = [];
+  if (!form) return;
 
-  // Real-time listener — Firestore pushes updates automatically
-  const q = query(collection(db, "requests"), orderBy("requestTime", "desc"));
-  onSnapshot(q, (snap) => {
-    allRows = snap.docs.map((d) => ({ _id: d.id, ...d.data() }));
-    loadingEl?.classList.add("hidden");
-    renderTracking();
-  });
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const searchId = searchInput.value.trim().toUpperCase();
+    if (!searchId) return;
 
-  function renderTracking() {
-    const search = searchEl?.value.toLowerCase() ?? "";
-    const status = statusFilter?.value ?? "";
-
-    const filtered = allRows.filter((r) => {
-      const matchSearch =
-        !search ||
-        Object.values(r)
-          .filter((v) => typeof v === "string")
-          .some((v) => v.toLowerCase().includes(search)) ||
-        routeStr(r).toLowerCase().includes(search);
-      const matchStatus = !status || r.status === status;
-      return matchSearch && matchStatus;
-    });
-
-    if (countEl)
-      countEl.textContent = `${filtered.length} request${filtered.length !== 1 ? "s" : ""}`;
-
-    if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">No requests found.</td></tr>`;
-      return;
+    // Unsubscribe from previous search listener if it exists
+    if (trackUnsubscribe) {
+      trackUnsubscribe();
+      trackUnsubscribe = null;
     }
 
-    tbody.innerHTML = filtered
-      .map((r) => {
-        const cls = STATUS_CLASS[r.status] || "badge-normal";
-        return `<tr>
-          <td><span class="req-id">${r.requestId || "—"}</span></td>
-          <td style="font-size:12px">${formatTime(r.requestTime)}</td>
-          <td>${r.requestType || "—"}</td>
-          <td>${routeStr(r)}</td>
-          <td>${r.unitType || "—"}</td>
-          <td><span class="badge ${cls}">${r.status || "—"}</span></td>
-        </tr>`;
-      })
-      .join("");
-  }
+    // Show loading, hide previous results/errors
+    loadingEl.classList.remove("hidden");
+    errorEl.classList.add("hidden");
+    resultEl.classList.add("hidden");
+    resultEl.innerHTML = "";
 
-  searchEl?.addEventListener("input", renderTracking);
-  statusFilter?.addEventListener("change", renderTracking);
+    try {
+      const q = query(
+        collection(db, "requests"),
+        where("requestId", "==", searchId)
+      );
+
+      trackUnsubscribe = onSnapshot(q, (snap) => {
+        loadingEl.classList.add("hidden");
+
+        if (snap.empty) {
+          errorMsgEl.textContent = `No delivery request was found with ID "${searchId}". Please check the ID and try again.`;
+          errorEl.classList.remove("hidden");
+          resultEl.classList.add("hidden");
+          return;
+        }
+
+        const r = snap.docs[0].data();
+        errorEl.classList.add("hidden");
+        renderRequestDetails(r);
+        resultEl.classList.remove("hidden");
+      }, (error) => {
+        console.error("Firestore tracking error:", error);
+        loadingEl.classList.add("hidden");
+        errorMsgEl.textContent = `An error occurred while fetching tracking details: ${error.message}`;
+        errorEl.classList.remove("hidden");
+        resultEl.classList.add("hidden");
+      });
+    } catch (err) {
+      console.error(err);
+      loadingEl.classList.add("hidden");
+      errorMsgEl.textContent = `Failed to query: ${err.message}`;
+      errorEl.classList.remove("hidden");
+    }
+  });
+
+  function renderRequestDetails(r) {
+    const statusClass = STATUS_CLASS[r.status] || "badge-normal";
+
+    // Progress bar calculations based on standard 5 statuses
+    // Pending -> Processing -> Unit Assigned -> On Delivery -> Completed
+    const statuses = ["Pending", "Processing", "Unit Assigned", "On Delivery", "Completed"];
+    
+    // If status is Problem, determine how far it went, or just color the current state
+    const isProblem = r.status === "Problem";
+    
+    // Find index of current status. If problem, look for last known state (e.g. check driver/vendor assignments)
+    let currentIdx = statuses.indexOf(r.status);
+    if (isProblem) {
+      // Logic to deduce where it failed:
+      if (r.driverName || r.vehicleNumber) {
+        currentIdx = 3; // "On Delivery" or "Unit Assigned" failed. Let's show it at Step 4 (On Delivery) / Index 3
+      } else if (r.vendor) {
+        currentIdx = 2; // "Unit Assigned" failed. Step 3 / Index 2
+      } else {
+        currentIdx = 1; // "Processing" failed. Step 2 / Index 1
+      }
+    }
+
+    // Set percentage
+    let percent = 0;
+    if (currentIdx !== -1) {
+      percent = currentIdx * 25; // 0%, 25%, 50%, 75%, 100%
+    }
+
+    // Render style progress properties
+    const progressStyle = `width: ${percent}%;`;
+
+    const stepClass = (stepNum) => {
+      const idx = stepNum - 1;
+      if (isProblem && idx === currentIdx) return "problem";
+      if (idx < currentIdx || r.status === "Completed") return "completed";
+      if (idx === currentIdx) return "active";
+      return "";
+    };
+
+    const stepIcon = (stepNum) => {
+      const idx = stepNum - 1;
+      if (isProblem && idx === currentIdx) return "⚠️";
+      if (idx < currentIdx || r.status === "Completed") return "✓";
+      return stepNum;
+    };
+
+    // Driver phone format WA link
+    let waLinkHtml = "";
+    if (r.driverPhone) {
+      const cleanPhone = r.driverPhone.replace(/[^0-9]/g, "");
+      const waPhone = cleanPhone.startsWith("0") ? "62" + cleanPhone.substring(1) : cleanPhone;
+      waLinkHtml = `
+        <div style="margin-top: 4px;">
+          <a href="https://wa.me/${waPhone}" target="_blank" rel="noopener" class="wa-link">
+            📱 WhatsApp (${r.driverPhone})
+          </a>
+        </div>
+      `;
+    }
+
+    resultEl.innerHTML = `
+      <div class="card" style="box-shadow: var(--shadow-lg); overflow: hidden;">
+        <!-- Header -->
+        <div class="card-header" style="flex-direction: column; align-items: flex-start; gap: 8px; border-bottom: 1px solid var(--border);">
+          <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <span class="req-id" style="font-size: 20px; font-weight: 800; color: var(--primary);">${r.requestId}</span>
+            <span class="badge ${statusClass}">${r.status}</span>
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted);">
+            Submitted on <strong>${formatTime(r.requestTime)}</strong> | Type: <strong>${r.requestType}</strong>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <!-- Problem Alert Banner -->
+          ${isProblem ? `
+          <div class="alert alert-error" style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 24px;">
+            <div style="font-size: 22px; line-height: 1;">⚠️</div>
+            <div>
+              <strong style="display: block; margin-bottom: 4px;">Delivery Issue Reported</strong>
+              <p style="margin: 0; font-size: 13px;">Our team has flagged a problem with this delivery request. Please check the notes or contact shift officers for support.</p>
+            </div>
+          </div>
+          ` : ""}
+
+          <!-- Timeline Stepper -->
+          <div class="tracking-timeline">
+            <div class="timeline-progress" style="${progressStyle}"></div>
+            
+            <div class="timeline-step ${stepClass(1)}">
+              <div class="step-node">${stepIcon(1)}</div>
+              <div class="step-label">Submitted</div>
+            </div>
+            <div class="timeline-step ${stepClass(2)}">
+              <div class="step-node">${stepIcon(2)}</div>
+              <div class="step-label">Processing</div>
+            </div>
+            <div class="timeline-step ${stepClass(3)}">
+              <div class="step-node">${stepIcon(3)}</div>
+              <div class="step-label">Unit Assigned</div>
+            </div>
+            <div class="timeline-step ${stepClass(4)}">
+              <div class="step-node">${stepIcon(4)}</div>
+              <div class="step-label">On Delivery</div>
+            </div>
+            <div class="timeline-step ${stepClass(5)}">
+              <div class="step-node">${stepIcon(5)}</div>
+              <div class="step-label">Completed</div>
+            </div>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--border); margin: 24px 0;" />
+
+          <!-- Details Grid -->
+          <div class="form-grid">
+            <!-- Route & Unit -->
+            <div class="form-section" style="margin-top: 0; background: #f8fafc;">
+              <div class="form-section-title">Route & Unit Details</div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); display: block;">Route</span>
+                  <strong style="font-size: 15px; color: var(--primary-dark);">${routeStr(r)}</strong>
+                </div>
+                ${r.requestType === "DO NO" && r.doNumber ? `
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); display: block;">DO Number</span>
+                  <strong>${r.doNumber}</strong>
+                </div>
+                ` : ""}
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); display: block;">Unit Type</span>
+                  <strong>${r.unitType || "—"}</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Delivery Assignment -->
+            <div class="form-section" style="margin-top: 0; background: #f8fafc;">
+              <div class="form-section-title">Delivery Assignment</div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); display: block;">Vendor / Carrier</span>
+                  <strong>${r.vendor || "Not assigned yet"}</strong>
+                </div>
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); display: block;">Vehicle Number (Nopol)</span>
+                  <strong>${r.vehicleNumber || "—"}</strong>
+                </div>
+                <div>
+                  <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); display: block;">Driver Details</span>
+                  ${r.driverName ? `
+                    <strong>${r.driverName}</strong>
+                    ${waLinkHtml}
+                  ` : "<strong>—</strong>"}
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes & Updates -->
+            <div class="full" style="display: grid; grid-template-columns: 1fr; gap: 14px;">
+              ${r.notes ? `
+              <div class="form-section" style="margin-top: 0; background: #fffbeb; border-color: #fde047;">
+                <div class="form-section-title" style="color: #854d0e;">Status Notes / Instructions</div>
+                <p style="font-size: 13.5px; white-space: pre-line; color: #451a03; margin: 0;">${r.notes}</p>
+              </div>
+              ` : ""}
+
+              <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 12px; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 6px;">
+                <span>Last Updated: <strong>${formatTime(r.lastUpdated)}</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 }
 
 // ============================================================

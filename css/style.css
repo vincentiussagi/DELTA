@@ -698,3 +698,143 @@ tr:last-child td { border-bottom: none; }
 .summary-pill.active .summary-pill-count {
   color: var(--primary-dark);
 }
+
+/* ============================================================
+   TRACKING TIMELINE STYLES
+   ============================================================ */
+.tracking-timeline {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 32px 0 20px;
+  padding: 0 10px;
+}
+
+.tracking-timeline::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--border);
+  z-index: 1;
+}
+
+.timeline-progress {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  height: 4px;
+  background: var(--success);
+  z-index: 2;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  flex: 1;
+}
+
+.step-node {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 3.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-muted);
+  transition: all 0.4s ease;
+}
+
+.timeline-step.active .step-node {
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+  background: #f0f4ff;
+  box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.2);
+}
+
+.timeline-step.completed .step-node {
+  border-color: var(--success);
+  color: white;
+  background: var(--success);
+}
+
+.timeline-step.problem .step-node {
+  border-color: var(--danger);
+  color: white;
+  background: var(--danger);
+  animation: pulse-danger 2s infinite;
+}
+
+@keyframes pulse-danger {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+.step-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.timeline-step.active .step-label {
+  color: var(--primary-light);
+  font-weight: 700;
+}
+
+.timeline-step.completed .step-label {
+  color: var(--success);
+}
+
+.timeline-step.problem .step-label {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+@media (max-width: 576px) {
+  .tracking-timeline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding-left: 20px;
+  }
+  .tracking-timeline::before {
+    left: 25px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    height: auto;
+  }
+  .timeline-progress {
+    left: 25px;
+    top: 0;
+    width: 4px;
+    height: 0%;
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .timeline-step {
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+  }
+  .step-label {
+    margin-top: 0;
+    text-align: left;
+  }
+}
+

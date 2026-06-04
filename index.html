@@ -260,58 +260,50 @@
      SECTION 2: REQUEST TRACKING
 ════════════════════════════════════════════════════════════ -->
 <div id="tracking-section" class="tab-section hidden">
-  <div class="container">
-    <div class="page-header">
-      <h1>Request Tracking</h1>
-      <p>Live view of all delivery requests. Updates automatically in real time.</p>
+  <div class="container-sm">
+    <div class="page-header" style="text-align: center;">
+      <h1>Track Delivery Request</h1>
+      <p>Enter a Request ID below to view its status and delivery information.</p>
     </div>
 
-    <!-- Status legend -->
-    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;">
-      <span class="badge badge-pending">Pending</span>
-      <span class="badge badge-processing">Processing</span>
-      <span class="badge badge-assigned">Unit Assigned</span>
-      <span class="badge badge-delivery">On Delivery</span>
-      <span class="badge badge-completed">Completed</span>
-      <span class="badge badge-problem">Problem</span>
+    <!-- Search Form Card -->
+    <div class="card" style="margin-bottom: 24px;">
+      <div class="card-body" style="padding: 20px;">
+        <form id="trackSearchForm" style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+          <div class="form-group" style="flex: 1; min-width: 200px;">
+            <label for="trackSearchId">Request ID <span class="req">*</span></label>
+            <input type="text" id="trackSearchId" required placeholder="e.g., DELTA-04062026001" 
+                   style="text-transform: uppercase; font-family: monospace; font-weight: 600; letter-spacing: 0.5px;" />
+          </div>
+          <button type="submit" class="btn btn-primary" style="height: 42px; min-width: 130px; justify-content: center;">
+            Track Status
+          </button>
+        </form>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-header">
-        <h2>All Requests</h2>
-        <span id="trackCount" style="font-size:12.5px; color:var(--text-muted);">Loading…</span>
+    <!-- Loading State -->
+    <div id="trackLoading" class="card hidden" style="margin-bottom: 24px;">
+      <div class="card-body" style="text-align: center; padding: 40px 20px;">
+        <div class="spinner" style="margin: 0 auto 12px;"></div>
+        <p style="color: var(--text-muted); font-size: 13.5px;">Searching for request details...</p>
       </div>
-      <div style="padding:14px 20px; border-bottom:1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap;">
-        <input type="search" id="trackSearch" placeholder="Search by ID, requester, route…"
-          style="flex:1; min-width:200px; max-width:320px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;" />
-        <select id="trackStatusFilter" style="min-width:160px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;">
-          <option value="">All Statuses</option>
-          <option>Pending</option>
-          <option>Processing</option>
-          <option>Unit Assigned</option>
-          <option>On Delivery</option>
-          <option>Completed</option>
-          <option>Problem</option>
-        </select>
+    </div>
+
+    <!-- Error State (Not Found) -->
+    <div id="trackError" class="card hidden" style="margin-bottom: 24px; border-color: var(--danger);">
+      <div class="card-body" style="text-align: center; padding: 32px 20px;">
+        <div style="font-size: 32px; margin-bottom: 12px;">⚠️</div>
+        <h3 style="font-size: 15px; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Request Not Found</h3>
+        <p id="trackErrorMsg" style="color: var(--text-muted); font-size: 13px; max-width: 380px; margin: 0 auto;">
+          No delivery request was found with that ID. Please check the spelling and try again.
+        </p>
       </div>
-      <div id="trackLoading" class="loading">
-        <div class="spinner"></div> Loading requests…
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Request ID</th>
-              <th>Request Time</th>
-              <th>Type</th>
-              <th>Route</th>
-              <th>Unit Type</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="trackTbody"></tbody>
-        </table>
-      </div>
+    </div>
+
+    <!-- Results Container -->
+    <div id="trackResult" class="hidden">
+      <!-- Injected dynamically via app.js -->
     </div>
   </div>
 </div>

@@ -5,9 +5,9 @@
 // Import these wherever you need to read/write data or manage login.
 // ============================================================
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 // ------------------------------------------------------------
 // Firebase project config.

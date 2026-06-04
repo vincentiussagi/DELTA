@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DELTA – Delivery Internal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <style>
+    /* ── Tab nav ─────────────────────────────────────────── */
+    .tab-nav {
+      background: var(--primary-dark);
+      display: flex;
+      gap: 2px;
+      padding: 0 20px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.65);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 11px 18px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+    .tab-btn:hover { color: rgba(255,255,255,0.9); }
+    .tab-btn.active {
+      color: white;
+      border-bottom-color: var(--accent);
+    }
+    .tab-section { display: block; }
+    .tab-section.hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ── Top Nav ──────────────────────────────────────────────── -->
+<nav class="nav">
+  <span class="nav-brand">
+    DELTA <span class="badge">DCO</span>
+  </span>
+</nav>
+
+<!-- ── Tab Bar ──────────────────────────────────────────────── -->
+<div class="tab-nav">
+  <button class="tab-btn" data-tab="submit">Submit Request</button>
+  <button class="tab-btn" data-tab="tracking">Request Tracking</button>
+  <button class="tab-btn" data-tab="dashboard">DCO Dashboard</button>
+  <button class="tab-btn" data-tab="shift">Shift Information</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1: SUBMIT REQUEST
+════════════════════════════════════════════════════════════ -->
+<div id="submit-section" class="tab-section">
+  <div class="container-sm">
+    <div class="page-header">
+      <h1>Delivery Request</h1>
+      <p>Complete the form below to submit a new delivery request. No login required.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Request Details</h2></div>
+      <div class="card-body">
+        <div id="formMsg"></div>
+
+        <form id="requestForm" novalidate>
+          <div class="form-grid">
+
+            <!-- Requester Name -->
+            <div class="form-group">
+              <label for="requesterName">Requester Name <span class="req">*</span></label>
+              <input type="text" id="requesterName" name="requesterName" required placeholder="Enter full name" />
+            </div>
+
+            <!-- Department -->
+            <div class="form-group">
+              <label for="department">Department <span class="req">*</span></label>
+              <select id="department" name="department" required>
+                <option value="">— Select Department —</option>
+                <option>BU17</option>
+                <option>BU19</option>
+                <option>PM3</option>
+                <option>PM1</option>
+                <option>RMD</option>
+                <option>Other</option>
+              </select>
+              <input type="text" id="departmentOther" name="departmentOther"
+                placeholder="Specify department name" class="hidden" style="margin-top:6px" />
+            </div>
+
+            <!-- Contact Number -->
+            <div class="form-group">
+              <label for="contactNumber">Contact Number <span class="req">*</span></label>
+              <input type="tel" id="contactNumber" name="contactNumber" required placeholder="e.g. 0812-xxxx-xxxx" />
+            </div>
+
+            <!-- Unit Type -->
+            <div class="form-group">
+              <label for="unitType">Unit Type <span class="req">*</span></label>
+              <select id="unitType" name="unitType" required>
+                <option value="">— Select Unit Type —</option>
+                <option>Tronton Lossbak</option>
+                <option>Colt Diesel</option>
+                <option>Other</option>
+              </select>
+              <input type="text" id="unitTypeOther" name="unitTypeOther"
+                placeholder="Specify unit type" class="hidden" style="margin-top:6px" />
+            </div>
+
+            <!-- Request Type -->
+            <div class="form-group full">
+              <label for="requestType">Request Type <span class="req">*</span></label>
+              <select id="requestType" name="requestType" required style="max-width:280px;">
+                <option value="">— Select Request Type —</option>
+                <option>DO NO</option>
+                <option>INTERN</option>
+              </select>
+            </div>
+
+            <!-- ── DO NO Section ───────────────────────────── -->
+            <div id="doSection" class="full hidden">
+              <div class="form-section">
+                <div class="form-section-title">DO NO Details</div>
+                <div class="form-grid">
+
+                  <!-- DO Number -->
+                  <div class="form-group full">
+                    <label for="doNumber">DO Number <span class="req">*</span></label>
+                    <input type="text" id="doNumber" name="doNumber" placeholder="Enter DO Number" />
+                  </div>
+
+                  <!-- Origin Mill -->
+                  <div class="form-group">
+                    <label for="originMill">Origin Mill <span class="req">*</span></label>
+                    <select id="originMill" name="originMill">
+                      <option value="">— Select Origin Mill —</option>
+                      <option>IKK</option>
+                      <option>PINDO 2</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+
+                  <!-- Destination Mill -->
+                  <div class="form-group">
+                    <label for="destinationMill">Destination Mill <span class="req">*</span></label>
+                    <select id="destinationMill" name="destinationMill">
+                      <option value="">— Select Destination Mill —</option>
+                      <option>IKK</option>
+                      <option>PINDO 2</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+
+                  <!-- Origin Warehouse (IKK only) -->
+                  <div id="originMillWhGroup" class="form-group hidden">
+                    <label for="originMillWh">Origin Warehouse <span class="req">*</span></label>
+                    <select id="originMillWh" name="originMillWh">
+                      <option value="">— Select Warehouse —</option>
+                      <option>BU17</option>
+                      <option>BU19</option>
+                      <option>PM3</option>
+                      <option>PM1</option>
+                      <option>RMD</option>
+                      <option>Other</option>
+                    </select>
+                    <input type="text" id="originMillWhOther" name="originMillWhOther"
+                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                  </div>
+
+                  <!-- Destination Warehouse (IKK only) -->
+                  <div id="destMillWhGroup" class="form-group hidden">
+                    <label for="destMillWh">Destination Warehouse <span class="req">*</span></label>
+                    <select id="destMillWh" name="destMillWh">
+                      <option value="">— Select Warehouse —</option>
+                      <option>BU17</option>
+                      <option>BU19</option>
+                      <option>PM3</option>
+                      <option>PM1</option>
+                      <option>RMD</option>
+                      <option>Other</option>
+                    </select>
+                    <input type="text" id="destMillWhOther" name="destMillWhOther"
+                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- ── INTERN Section ──────────────────────────── -->
+            <div id="internSection" class="full hidden">
+              <div class="form-section">
+                <div class="form-section-title">INTERN Details</div>
+                <div class="form-grid">
+
+                  <!-- Origin Warehouse -->
+                  <div class="form-group">
+                    <label for="internOriginWh">Origin Warehouse <span class="req">*</span></label>
+                    <select id="internOriginWh" name="internOriginWh">
+                      <option value="">— Select Origin —</option>
+                      <option>BU17</option>
+                      <option>BU19</option>
+                      <option>PM3</option>
+                      <option>PM1</option>
+                      <option>RMD</option>
+                      <option>Other</option>
+                    </select>
+                    <input type="text" id="internOriginWhOther" name="internOriginWhOther"
+                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                  </div>
+
+                  <!-- Destination Warehouse -->
+                  <div class="form-group">
+                    <label for="internDestWh">Destination Warehouse <span class="req">*</span></label>
+                    <select id="internDestWh" name="internDestWh">
+                      <option value="">— Select Destination —</option>
+                      <option>BU17</option>
+                      <option>BU19</option>
+                      <option>PM3</option>
+                      <option>PM1</option>
+                      <option>RMD</option>
+                      <option>Other</option>
+                    </select>
+                    <input type="text" id="internDestWhOther" name="internDestWhOther"
+                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="form-group full">
+              <label for="notes">Notes <span style="color:var(--text-muted);font-weight:400;">(Optional)</span></label>
+              <textarea id="notes" name="notes" placeholder="Add any additional information…"></textarea>
+            </div>
+
+          </div><!-- /.form-grid -->
+
+          <div style="margin-top:24px; display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn btn-primary" style="min-width:160px;">
+              Submit Request
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2: REQUEST TRACKING
+════════════════════════════════════════════════════════════ -->
+<div id="tracking-section" class="tab-section hidden">
+  <div class="container">
+    <div class="page-header">
+      <h1>Request Tracking</h1>
+      <p>Live view of all delivery requests. Updates automatically in real time.</p>
+    </div>
+
+    <!-- Status legend -->
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;">
+      <span class="badge badge-pending">Pending</span>
+      <span class="badge badge-processing">Processing</span>
+      <span class="badge badge-assigned">Unit Assigned</span>
+      <span class="badge badge-delivery">On Delivery</span>
+      <span class="badge badge-completed">Completed</span>
+      <span class="badge badge-problem">Problem</span>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>All Requests</h2>
+        <span id="trackCount" style="font-size:12.5px; color:var(--text-muted);">Loading…</span>
+      </div>
+      <div style="padding:14px 20px; border-bottom:1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap;">
+        <input type="search" id="trackSearch" placeholder="Search by ID, requester, route…"
+          style="flex:1; min-width:200px; max-width:320px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;" />
+        <select id="trackStatusFilter" style="min-width:160px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;">
+          <option value="">All Statuses</option>
+          <option>Pending</option>
+          <option>Processing</option>
+          <option>Unit Assigned</option>
+          <option>On Delivery</option>
+          <option>Completed</option>
+          <option>Problem</option>
+        </select>
+      </div>
+      <div id="trackLoading" class="loading">
+        <div class="spinner"></div> Loading requests…
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Request Time</th>
+              <th>Type</th>
+              <th>Route</th>
+              <th>Unit Type</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="trackTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3: DCO DASHBOARD
+════════════════════════════════════════════════════════════ -->
+<div id="dashboard-section" class="tab-section hidden">
+  <div class="container">
+
+    <!-- Login gate (shown when not authenticated) -->
+    <div id="dashLogin">
+      <div style="max-width:400px; margin:48px auto;">
+        <div class="page-header" style="text-align:center;">
+          <h1>DCO Dashboard</h1>
+          <p>Sign in with your officer account to access the dashboard.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h2>Officer Sign In</h2></div>
+          <div class="card-body">
+            <div id="dashLoginMsg"></div>
+            <form id="dashLoginForm" novalidate>
+              <div class="form-group" style="margin-bottom:14px;">
+                <label for="dashEmail">Email Address</label>
+                <input type="email" id="dashEmail" required placeholder="officer@company.com" autocomplete="email" />
+              </div>
+              <div class="form-group" style="margin-bottom:20px;">
+                <label for="dashPassword">Password</label>
+                <input type="password" id="dashPassword" required placeholder="Enter your password" autocomplete="current-password" />
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+                Sign In
+              </button>
+            </form>
+          </div>
+        </div>
+        <p style="text-align:center; margin-top:14px; font-size:12px; color:var(--text-muted);">
+          This portal is for authorized DCO officers only.<br />
+          Contact your supervisor to request access.
+        </p>
+      </div>
+    </div>
+
+    <!-- Dashboard content (shown when authenticated) -->
+    <div id="dashTable" class="hidden">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="margin:0;">
+          <h1>DCO Dashboard</h1>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:13px; color:var(--text-muted);" id="dashUserEmail"></span>
+          <button id="dashLogout" class="btn btn-sm btn-outline">Sign Out</button>
+        </div>
+      </div>
+
+      <!-- Status summary pills — live counts, click to filter -->
+      <div id="statusSummary" class="status-summary"></div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>All Delivery Requests</h2>
+          <span id="dashCount" style="font-size:12.5px; color:var(--text-muted);">Loading…</span>
+        </div>
+        <div style="padding:14px 20px; border-bottom:1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap;">
+          <input type="search" id="dashSearch" placeholder="Search by ID, requester, vendor, route…"
+            style="flex:1; min-width:200px; max-width:320px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;" />
+          <select id="dashStatusFilter" style="min-width:160px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;">
+            <option value="">All Statuses</option>
+            <option>Pending</option>
+            <option>Processing</option>
+            <option>Unit Assigned</option>
+            <option>On Delivery</option>
+            <option>Completed</option>
+            <option>Problem</option>
+          </select>
+        </div>
+        <div id="dashLoading" class="loading">
+          <div class="spinner"></div> Loading requests…
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Time</th>
+                <th>Requester</th>
+                <th>Dept</th>
+                <th>Contact</th>
+                <th>Type</th>
+                <th>Route</th>
+                <th>Unit</th>
+                <th>Status</th>
+                <th>Vendor</th>
+                <th>Driver / Vehicle</th>
+                <th>Last Updated</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="dashTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /#dashTable -->
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4: SHIFT INFORMATION
+════════════════════════════════════════════════════════════ -->
+<div id="shift-section" class="tab-section hidden">
+  <div class="container">
+    <div class="page-header">
+      <h1>Shift Information</h1>
+      <p id="shiftClock" style="font-size:13px;color:var(--text-muted);font-variant-numeric:tabular-nums;"></p>
+    </div>
+    <div class="card">
+      <div class="card-header"><h2>On-Duty Officers</h2></div>
+      <div class="card-body">
+        <div id="shiftGrid" class="shift-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     EDIT MODAL (DCO Dashboard)
+════════════════════════════════════════════════════════════ -->
+<div id="editModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Update Request — <span id="modalReqId"></span></h3>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <form id="editForm">
+      <div class="modal-body">
+        <p style="color:var(--text-muted); font-size:13px; margin-bottom:18px;" id="modalRoute"></p>
+        <div id="modalMsg" style="color:var(--danger); font-size:13px; margin-bottom:10px;"></div>
+        <div class="form-grid" style="gap:14px;">
+          <div class="form-group full">
+            <label for="editStatus">Status <span class="req">*</span></label>
+            <select id="editStatus">
+              <option>Pending</option>
+              <option>Processing</option>
+              <option>Unit Assigned</option>
+              <option>On Delivery</option>
+              <option>Completed</option>
+              <option>Problem</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="editVendor">Vendor</label>
+            <input type="text" id="editVendor" placeholder="Vendor name" />
+          </div>
+          <div class="form-group">
+            <label for="editVehicle">Vehicle Number (Nopol)</label>
+            <input type="text" id="editVehicle" placeholder="e.g. B 1234 ABC" />
+          </div>
+          <div class="form-group">
+            <label for="editDriver">Driver Name</label>
+            <input type="text" id="editDriver" placeholder="Driver full name" />
+          </div>
+          <div class="form-group full">
+            <label for="editDriverPhone">Driver Phone</label>
+            <input type="tel" id="editDriverPhone" placeholder="e.g. 0812-xxxx-xxxx" />
+          </div>
+          <div class="form-group full">
+            <label for="editNotes">Notes</label>
+            <textarea id="editNotes" style="min-height:64px;" placeholder="Internal notes…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button type="button" class="btn btn-danger btn-sm" id="deleteRequestBtn">
+          Delete
+        </button>
+        <div style="display:flex;gap:10px;">
+          <button type="button" class="btn btn-outline" id="cancelEdit">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SUCCESS MODAL (Submit Request)
+════════════════════════════════════════════════════════════ -->
+<div id="successModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-body" style="text-align:center; padding:36px 28px;">
+      <div class="success-circle">✓</div>
+      <h3 style="font-size:18px; font-weight:700; color:#15803d; margin-bottom:8px;">Request Submitted!</h3>
+      <p style="color:#555; margin-bottom:20px;">Your delivery request has been submitted successfully.</p>
+      <p style="font-size:13px; color:#888; margin-bottom:8px;">Request ID</p>
+      <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 24px; margin-bottom:20px; display:inline-block;">
+        <span id="successId" style="font-size:24px; font-weight:800; color:#15803d; font-family:monospace; letter-spacing:2px;"></span>
+      </div>
+      <p style="font-size:12.5px; color:#888; margin-bottom:24px;">
+        Save this ID to track your request on the <strong>Request Tracking</strong> tab.
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <button id="newRequestBtn" class="btn btn-primary">Submit Another</button>
+        <button class="btn btn-outline" onclick="document.querySelector('[data-tab=tracking]').click(); document.getElementById('successModal').classList.remove('open');">
+          View Tracking
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./js/app.js"></script>
+</body>
+</html>

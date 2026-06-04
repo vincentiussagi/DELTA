@@ -53,7 +53,7 @@ const SHIFT_GROUPS = {
 const SHIFT_CYCLE = [3, 3, 3, "OFF", 2, 2, 2, "OFF", 1, 1, 1, "OFF"];
 
 // Cycle index for each group on the anchor date 2026-06-02 (verified against reference)
-const GROUP_CYCLE_OFFSET = { A: 9, B: 3, C: 0, D: 5 };
+const GROUP_CYCLE_OFFSET = { A: 9, B: 3, C: 0, D: 6 };
 const SHIFT_ANCHOR = new Date(2026, 5, 2); // 1 Jun 2026 (month is 0-indexed)
 
 const SHIFT_TIMES = {

@@ -16,7 +16,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth
 // All other values are public project identifiers.
 // ------------------------------------------------------------
 const firebaseConfig = {
-  apiKey: AIzaSyD0FgVMF15B9P44TdM8KvTce2vJMdCg_uw,
+  apiKey: "AIzaSyD0FgVMF15B9P44TdM8KvTce2vJMdCg_uw",
   authDomain: "delta-dco.firebaseapp.com",
   projectId: "delta-dco",
   storageBucket: "delta-dco.firebasestorage.app",

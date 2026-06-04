@@ -50,10 +50,10 @@
 
 <!-- ── Tab Bar ──────────────────────────────────────────────── -->
 <div class="tab-nav">
-  <button class="tab-btn" data-tab="submit">Submit Request</button>
-  <button class="tab-btn" data-tab="tracking">Request Tracking</button>
-  <button class="tab-btn" data-tab="dashboard">DCO Dashboard</button>
-  <button class="tab-btn" data-tab="shift">Shift Information</button>
+  <button class="tab-btn" data-tab="submit">Buat Request</button>
+  <button class="tab-btn" data-tab="tracking">Tracking Request</button>
+  <button class="tab-btn" data-tab="dashboard">Dashboard DCO</button>
+  <button class="tab-btn" data-tab="shift">Informasi Shift</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -63,11 +63,11 @@
   <div class="container-sm">
     <div class="page-header">
       <h1>Delivery Request</h1>
-      <p>Complete the form below to submit a new delivery request. No login required.</p>
+      <p>Lengkapi form berikut untuk membuat delivery request. Tidak perlu login.</p>
     </div>
 
     <div class="card">
-      <div class="card-header"><h2>Request Details</h2></div>
+      <div class="card-header"><h2>Detail Request</h2></div>
       <div class="card-body">
         <div id="formMsg"></div>
 
@@ -76,15 +76,15 @@
 
             <!-- Requester Name -->
             <div class="form-group">
-              <label for="requesterName">Requester Name <span class="req">*</span></label>
-              <input type="text" id="requesterName" name="requesterName" required placeholder="Enter full name" />
+              <label for="requesterName">Nama Peminta <span class="req">*</span></label>
+              <input type="text" id="requesterName" name="requesterName" required placeholder="Masukkan Nama" />
             </div>
 
             <!-- Department -->
             <div class="form-group">
-              <label for="department">Department <span class="req">*</span></label>
+              <label for="department">Departmen <span class="req">*</span></label>
               <select id="department" name="department" required>
-                <option value="">— Select Department —</option>
+                <option value="">— Pilih Departemen  —</option>
                 <option>BU17</option>
                 <option>BU19</option>
                 <option>PM3</option>
@@ -98,15 +98,15 @@
 
             <!-- Contact Number -->
             <div class="form-group">
-              <label for="contactNumber">Contact Number <span class="req">*</span></label>
-              <input type="tel" id="contactNumber" name="contactNumber" required placeholder="e.g. 0812-xxxx-xxxx" />
+              <label for="contactNumber">No. HP <span class="req">*</span></label>
+              <input type="tel" id="contactNumber" name="contactNumber" required placeholder="cth. 0812-xxxx-xxxx" />
             </div>
 
             <!-- Unit Type -->
             <div class="form-group">
-              <label for="unitType">Unit Type <span class="req">*</span></label>
+              <label for="unitType">Jenis Unit <span class="req">*</span></label>
               <select id="unitType" name="unitType" required>
-                <option value="">— Select Unit Type —</option>
+                <option value="">— Pilih Jenis Unit —</option>
                 <option>Tronton Lossbak</option>
                 <option>Colt Diesel</option>
                 <option>Other</option>
@@ -117,9 +117,9 @@
 
             <!-- Request Type -->
             <div class="form-group full">
-              <label for="requestType">Request Type <span class="req">*</span></label>
+              <label for="requestType">Jenis Pengiriman <span class="req">*</span></label>
               <select id="requestType" name="requestType" required style="max-width:280px;">
-                <option value="">— Select Request Type —</option>
+                <option value="">— Pilih Jenis Pengiriman —</option>
                 <option>DO NO</option>
                 <option>INTERN</option>
               </select>
@@ -128,20 +128,20 @@
             <!-- ── DO NO Section ───────────────────────────── -->
             <div id="doSection" class="full hidden">
               <div class="form-section">
-                <div class="form-section-title">DO NO Details</div>
+                <div class="form-section-title">Detail DO NO</div>
                 <div class="form-grid">
 
                   <!-- DO Number -->
                   <div class="form-group full">
-                    <label for="doNumber">DO Number <span class="req">*</span></label>
-                    <input type="text" id="doNumber" name="doNumber" placeholder="Enter DO Number" />
+                    <label for="doNumber">Nomor DO <span class="req">*</span></label>
+                    <input type="text" id="doNumber" name="doNumber" placeholder="Masukkan Nomor DO" />
                   </div>
 
                   <!-- Origin Mill -->
                   <div class="form-group">
-                    <label for="originMill">Origin Mill <span class="req">*</span></label>
+                    <label for="originMill">Mill Asal <span class="req">*</span></label>
                     <select id="originMill" name="originMill">
-                      <option value="">— Select Origin Mill —</option>
+                      <option value="">— Pilih Mill Asal —</option>
                       <option>IKK</option>
                       <option>PINDO 2</option>
                       <option>Other</option>
@@ -150,9 +150,9 @@
 
                   <!-- Destination Mill -->
                   <div class="form-group">
-                    <label for="destinationMill">Destination Mill <span class="req">*</span></label>
+                    <label for="destinationMill">Mill Tujuan <span class="req">*</span></label>
                     <select id="destinationMill" name="destinationMill">
-                      <option value="">— Select Destination Mill —</option>
+                      <option value="">— Pilih Mill Tujuan —</option>
                       <option>IKK</option>
                       <option>PINDO 2</option>
                       <option>Other</option>
@@ -161,9 +161,9 @@
 
                   <!-- Origin Warehouse (IKK only) -->
                   <div id="originMillWhGroup" class="form-group hidden">
-                    <label for="originMillWh">Origin Warehouse <span class="req">*</span></label>
+                    <label for="originMillWh">Gudang Muat <span class="req">*</span></label>
                     <select id="originMillWh" name="originMillWh">
-                      <option value="">— Select Warehouse —</option>
+                      <option value="">— Pilih Gudang —</option>
                       <option>BU17</option>
                       <option>BU19</option>
                       <option>PM3</option>
@@ -172,14 +172,14 @@
                       <option>Other</option>
                     </select>
                     <input type="text" id="originMillWhOther" name="originMillWhOther"
-                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
                   </div>
 
                   <!-- Destination Warehouse (IKK only) -->
                   <div id="destMillWhGroup" class="form-group hidden">
-                    <label for="destMillWh">Destination Warehouse <span class="req">*</span></label>
+                    <label for="destMillWh">Gudang Bongkar <span class="req">*</span></label>
                     <select id="destMillWh" name="destMillWh">
-                      <option value="">— Select Warehouse —</option>
+                      <option value="">— Pilih Gudang —</option>
                       <option>BU17</option>
                       <option>BU19</option>
                       <option>PM3</option>
@@ -188,7 +188,7 @@
                       <option>Other</option>
                     </select>
                     <input type="text" id="destMillWhOther" name="destMillWhOther"
-                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
                   </div>
 
                 </div>
@@ -198,14 +198,14 @@
             <!-- ── INTERN Section ──────────────────────────── -->
             <div id="internSection" class="full hidden">
               <div class="form-section">
-                <div class="form-section-title">INTERN Details</div>
+                <div class="form-section-title">Detail INTERN</div>
                 <div class="form-grid">
 
                   <!-- Origin Warehouse -->
                   <div class="form-group">
-                    <label for="internOriginWh">Origin Warehouse <span class="req">*</span></label>
+                    <label for="internOriginWh">Gudang Muat <span class="req">*</span></label>
                     <select id="internOriginWh" name="internOriginWh">
-                      <option value="">— Select Origin —</option>
+                      <option value="">— Pilih Gudang —</option>
                       <option>BU17</option>
                       <option>BU19</option>
                       <option>PM3</option>
@@ -214,14 +214,14 @@
                       <option>Other</option>
                     </select>
                     <input type="text" id="internOriginWhOther" name="internOriginWhOther"
-                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
                   </div>
 
                   <!-- Destination Warehouse -->
                   <div class="form-group">
-                    <label for="internDestWh">Destination Warehouse <span class="req">*</span></label>
+                    <label for="internDestWh">Gudang Bongkar <span class="req">*</span></label>
                     <select id="internDestWh" name="internDestWh">
-                      <option value="">— Select Destination —</option>
+                      <option value="">— Pilih Gudang —</option>
                       <option>BU17</option>
                       <option>BU19</option>
                       <option>PM3</option>
@@ -230,7 +230,7 @@
                       <option>Other</option>
                     </select>
                     <input type="text" id="internDestWhOther" name="internDestWhOther"
-                      placeholder="Specify warehouse name" class="hidden" style="margin-top:6px" />
+                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
                   </div>
 
                 </div>
@@ -239,7 +239,7 @@
 
             <!-- Notes -->
             <div class="form-group full">
-              <label for="notes">Notes <span style="color:var(--text-muted);font-weight:400;">(Optional)</span></label>
+              <label for="notes">Keeterangan <span style="color:var(--text-muted);font-weight:400;">Masukkan jenis barang, jumlah ritase, dll.</span></label>
               <textarea id="notes" name="notes" placeholder="Add any additional information…"></textarea>
             </div>
 
@@ -262,8 +262,8 @@
 <div id="tracking-section" class="tab-section hidden">
   <div class="container-sm">
     <div class="page-header" style="text-align: center;">
-      <h1>Track Delivery Request</h1>
-      <p>Enter a Request ID below to view its status and delivery information.</p>
+      <h1>Tracking Delivery Request</h1>
+      <p>Masukkan Request ID untuk melihat Status dan informasi delivery.</p>
     </div>
 
     <!-- Search Form Card -->
@@ -276,7 +276,7 @@
                    style="text-transform: uppercase; font-family: monospace; font-weight: 600; letter-spacing: 0.5px;" />
           </div>
           <button type="submit" class="btn btn-primary" style="height: 42px; min-width: 130px; justify-content: center;">
-            Track Status
+            Cari Status
           </button>
         </form>
       </div>
@@ -286,7 +286,7 @@
     <div id="trackLoading" class="card hidden" style="margin-bottom: 24px;">
       <div class="card-body" style="text-align: center; padding: 40px 20px;">
         <div class="spinner" style="margin: 0 auto 12px;"></div>
-        <p style="color: var(--text-muted); font-size: 13.5px;">Searching for request details...</p>
+        <p style="color: var(--text-muted); font-size: 13.5px;">Mencari detail request...</p>
       </div>
     </div>
 
@@ -294,9 +294,9 @@
     <div id="trackError" class="card hidden" style="margin-bottom: 24px; border-color: var(--danger);">
       <div class="card-body" style="text-align: center; padding: 32px 20px;">
         <div style="font-size: 32px; margin-bottom: 12px;">⚠️</div>
-        <h3 style="font-size: 15px; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Request Not Found</h3>
+        <h3 style="font-size: 15px; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Request Tidak Ditemukan</h3>
         <p id="trackErrorMsg" style="color: var(--text-muted); font-size: 13px; max-width: 380px; margin: 0 auto;">
-          No delivery request was found with that ID. Please check the spelling and try again.
+          Tidak ditemukan delivery request dengan ID tersebut. Periksa kembali Request ID yang dimasukkan.
         </p>
       </div>
     </div>
@@ -318,31 +318,31 @@
     <div id="dashLogin">
       <div style="max-width:400px; margin:48px auto;">
         <div class="page-header" style="text-align:center;">
-          <h1>DCO Dashboard</h1>
-          <p>Sign in with your officer account to access the dashboard.</p>
+          <h1>Dashboard DCO</h1>
+          <p>Masuk menggunakan akun DCO untuk mengakses Dashboard.</p>
         </div>
         <div class="card">
-          <div class="card-header"><h2>Officer Sign In</h2></div>
+          <div class="card-header"><h2>Login DCO</h2></div>
           <div class="card-body">
             <div id="dashLoginMsg"></div>
             <form id="dashLoginForm" novalidate>
               <div class="form-group" style="margin-bottom:14px;">
-                <label for="dashEmail">Email Address</label>
+                <label for="dashEmail">Email</label>
                 <input type="email" id="dashEmail" required placeholder="officer@company.com" autocomplete="email" />
               </div>
               <div class="form-group" style="margin-bottom:20px;">
                 <label for="dashPassword">Password</label>
-                <input type="password" id="dashPassword" required placeholder="Enter your password" autocomplete="current-password" />
+                <input type="password" id="dashPassword" required placeholder="password" autocomplete="current-password" />
               </div>
               <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
-                Sign In
+                Masuk
               </button>
             </form>
           </div>
         </div>
         <p style="text-align:center; margin-top:14px; font-size:12px; color:var(--text-muted);">
-          This portal is for authorized DCO officers only.<br />
-          Contact your supervisor to request access.
+          Portal ini hanya dapat diakses oleh petugas DCO.<br />
+          Hubungi atasan Anda untuk meminta akses.
         </p>
       </div>
     </div>
@@ -351,11 +351,11 @@
     <div id="dashTable" class="hidden">
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
         <div class="page-header" style="margin:0;">
-          <h1>DCO Dashboard</h1>
+          <h1>Dashboard DCO</h1>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
           <span style="font-size:13px; color:var(--text-muted);" id="dashUserEmail"></span>
-          <button id="dashLogout" class="btn btn-sm btn-outline">Sign Out</button>
+          <button id="dashLogout" class="btn btn-sm btn-outline">Keluar</button>
         </div>
       </div>
 
@@ -368,10 +368,10 @@
           <span id="dashCount" style="font-size:12.5px; color:var(--text-muted);">Loading…</span>
         </div>
         <div style="padding:14px 20px; border-bottom:1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap;">
-          <input type="search" id="dashSearch" placeholder="Search by ID, requester, vendor, route…"
+          <input type="search" id="dashSearch" placeholder="Cari ID, peminta, Vendor, atau rute..."
             style="flex:1; min-width:200px; max-width:320px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;" />
           <select id="dashStatusFilter" style="min-width:160px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;">
-            <option value="">All Statuses</option>
+            <option value="">Semua Status</option>
             <option>Pending</option>
             <option>Processing</option>
             <option>Unit Assigned</option>
@@ -388,12 +388,12 @@
             <thead>
               <tr>
                 <th>Request ID</th>
-                <th>Time</th>
-                <th>Requester</th>
+                <th>Waktu</th>
+                <th>Peminta</th>
                 <th>Dept</th>
                 <th>Contact</th>
-                <th>Type</th>
-                <th>Route</th>
+                <th>Jenis</th>
+                <th>Rute</th>
                 <th>Unit</th>
                 <th>Status</th>
                 <th>Vendor</th>
@@ -417,11 +417,11 @@
 <div id="shift-section" class="tab-section hidden">
   <div class="container">
     <div class="page-header">
-      <h1>Shift Information</h1>
+      <h1>Informati Shift</h1>
       <p id="shiftClock" style="font-size:13px;color:var(--text-muted);font-variant-numeric:tabular-nums;"></p>
     </div>
     <div class="card">
-      <div class="card-header"><h2>On-Duty Officers</h2></div>
+      <div class="card-header"><h2>DCO On-Duty</h2></div>
       <div class="card-body">
         <div id="shiftGrid" class="shift-grid"></div>
       </div>
@@ -459,15 +459,15 @@
             <input type="text" id="editVendor" placeholder="Vendor name" />
           </div>
           <div class="form-group">
-            <label for="editVehicle">Vehicle Number (Nopol)</label>
+            <label for="editVehicle">Nopol</label>
             <input type="text" id="editVehicle" placeholder="e.g. B 1234 ABC" />
           </div>
           <div class="form-group">
-            <label for="editDriver">Driver Name</label>
+            <label for="editDriver">Nama Supir</label>
             <input type="text" id="editDriver" placeholder="Driver full name" />
           </div>
           <div class="form-group full">
-            <label for="editDriverPhone">Driver Phone</label>
+            <label for="editDriverPhone">No. HP Supir</label>
             <input type="tel" id="editDriverPhone" placeholder="e.g. 0812-xxxx-xxxx" />
           </div>
           <div class="form-group full">

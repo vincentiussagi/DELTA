@@ -505,10 +505,27 @@
       <p style="font-size:12.5px; color:#888; margin-bottom:24px;">
         Save this ID to track your request on the <strong>Request Tracking</strong> tab.
       </p>
-      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-        <button id="newRequestBtn" class="btn btn-primary">Submit Another</button>
-        <button class="btn btn-outline" onclick="document.querySelector('[data-tab=tracking]').click(); document.getElementById('successModal').classList.remove('open');">
+      <div style="display:flex; justify-content:center; margin-bottom:12px;">
+        <button id="viewTrackingBtn" class="btn btn-primary">
           View Tracking
+        </button>
+      </div>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button id="newRequestBtn" class="btn btn-outline">
+          Submit Another Request
+        </button>
+        <button id="shiftInfoBtn" class="btn btn-primary">
+          Informasi Shift DCO
+        </button>
+      </div>      
+      <div style="display:flex; justify-content:center; margin-top:16px;">
+        <button id="copyRequestIdBtn" class="btn btn-outline">
+          Copy Request ID
+        </button>
+      </div>      
+      <div style="display:flex; justify-content:center; margin-top:12px;">
+        <button id="closeSuccessBtn" class="btn btn-outline">
+          Close
         </button>
       </div>
     </div>

@@ -927,14 +927,11 @@ function loadDashboardTable() {
   let allRows = [];
 
   // Real-time listener for dashboard table
-  const q = query(collection(db, "requests"), orderBy("requestTime", "desc"));
-  onSnapshot(q, (snap) => {
-    allRows = snap.docs.map((d) => ({ _id: d.id, ...d.data() }));
-    loadingEl?.classList.add("hidden");
-    renderStatusSummary(allRows);
-    renderDash();
-  });
-
+const q = query(
+  collection(db, "publicTracking"),
+  where("requestId", "==", searchId)
+);
+trackUnsubscribe = onSnapshot(q, (snap) => {
   // Clicking a pill sets the status filter and re-renders
   window.__setStatusFilter = (status) => {
     if (statusFilter) statusFilter.value = status;

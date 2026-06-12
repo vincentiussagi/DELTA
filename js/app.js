@@ -132,8 +132,6 @@ function getNextDutyGroups() {
 const STATUS_CLASS = {
   Pending: "badge-pending",
   Processing: "badge-processing",
-  "Unit Assigned": "badge-assigned",
-  "On Delivery": "badge-delivery",
   Completed: "badge-completed",
   Problem: "badge-problem",
 };
@@ -583,7 +581,7 @@ function initTracking() {
 
     // Progress bar calculations based on standard 5 statuses
     // Pending -> Processing -> Unit Assigned -> On Delivery -> Completed
-    const statuses = ["Pending", "Processing", "Unit Assigned", "On Delivery", "Completed"];
+    const statuses = ["Pending", "Processing", "Completed"];
     
     // If status is Problem, determine how far it went, or just color the current state
     const isProblem = r.status === "Problem";
@@ -604,7 +602,7 @@ function initTracking() {
     // Set percentage
     let percent = 0;
     if (currentIdx !== -1) {
-      percent = currentIdx * 25; // 0%, 25%, 50%, 75%, 100%
+      percent = currentIdx * 50; // 0%, 25%, 50%, 75%, 100%
     }
 
     // Render style progress properties
@@ -889,8 +887,10 @@ function loadDashboardTable() {
   const summaryEl = document.getElementById("statusSummary");
 
   const ALL_STATUSES = [
-    "Pending", "Processing", "Unit Assigned",
-    "On Delivery", "Completed", "Problem",
+  "Pending",
+  "Processing",
+  "Completed",
+  "Problem",
   ];
 
   // -- Render the live status count pills above the table

@@ -54,10 +54,10 @@ const SHIFT_GROUPS = {
 const SHIFT_CYCLE = [3, 3, 3, "OFF", 2, 2, 2, "OFF", 1, 1, 1, "OFF"];
 
 // Cycle index for each group on the anchor date 2026-06-02 (verified against reference)
-const GROUP_CYCLE_OFFSET = { A: 9, B: 3, C: 0, D: 6 };
-const SHIFT_ANCHOR = new Date(2026, 5, 2); // 1 Jun 2026 (month is 0-indexed)
+ GROUP_CYCLE_OFFSET = { A: 9, B: 3, C: 0, D: 6 };
+ SHIFT_ANCHOR = new Date(2026, 5, 2); // 1 Jun 2026 (month is 0-indexed)
 
-const SHIFT_TIMES = {
+ SHIFT_TIMES = {
   1: "07:00 – 15:00",
   2: "15:00 – 23:00",
   3: "23:00 – 07:00",
@@ -67,10 +67,10 @@ const SHIFT_TIMES = {
 
 /** Return the shift assignment (1, 2, 3, or "OFF") for a group on a local date. */
 function getGroupShiftForDate(group, date) {
-  const anchor = new Date(SHIFT_ANCHOR.getFullYear(), SHIFT_ANCHOR.getMonth(), SHIFT_ANCHOR.getDate());
-  const d     = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const diff  = Math.round((d - anchor) / 86_400_000);
-  const ci    = ((GROUP_CYCLE_OFFSET[group] + diff) % 12 + 12) % 12;
+   anchor = new Date(SHIFT_ANCHOR.getFullYear(), SHIFT_ANCHOR.getMonth(), SHIFT_ANCHOR.getDate());
+   d     = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+   diff  = Math.round((d - anchor) / 86_400_000);
+   ci    = ((GROUP_CYCLE_OFFSET[group] + diff) % 12 + 12) % 12;
   return SHIFT_CYCLE[ci];
 }
 
@@ -80,20 +80,20 @@ function getGroupShiftForDate(group, date) {
  * Shift 3 is overnight (23:00–07:00): if hour < 7 the shift started yesterday.
  */
 function getCurrentShift(now = new Date()) {
-  const h   = now.getHours();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+   h   = now.getHours();
+   today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   if (h >= 7  && h < 15) return { shiftNumber: 1, shiftDate: today };
   if (h >= 15 && h < 23) return { shiftNumber: 2, shiftDate: today };
   if (h >= 23)            return { shiftNumber: 3, shiftDate: today };
   // 00:00–06:59 — Shift 3 that started yesterday
-  const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+   yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
   return { shiftNumber: 3, shiftDate: yesterday };
 }
 
 /** Shift immediately before the given shift. */
 function getPreviousShift({ shiftNumber, shiftDate }) {
   if (shiftNumber === 1) {
-    const prev = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() - 1);
+     prev = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() - 1);
     return { shiftNumber: 3, shiftDate: prev };
   }
   if (shiftNumber === 2) return { shiftNumber: 1, shiftDate };
@@ -104,7 +104,7 @@ function getPreviousShift({ shiftNumber, shiftDate }) {
 function getNextShift({ shiftNumber, shiftDate }) {
   if (shiftNumber === 1) return { shiftNumber: 2, shiftDate };
   if (shiftNumber === 2) return { shiftNumber: 3, shiftDate };
-  const next = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() + 1);
+   next = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() + 1);
   return { shiftNumber: 1, shiftDate: next };
 }
 
@@ -116,20 +116,20 @@ function getGroupsForShift(shiftNumber, shiftDate) {
 }
 
 function getCurrentDutyGroups() {
-  const { shiftNumber, shiftDate } = getCurrentShift();
+   { shiftNumber, shiftDate } = getCurrentShift();
   return getGroupsForShift(shiftNumber, shiftDate);
 }
 function getPreviousDutyGroups() {
-  const prev = getPreviousShift(getCurrentShift());
+   prev = getPreviousShift(getCurrentShift());
   return getGroupsForShift(prev.shiftNumber, prev.shiftDate);
 }
 function getNextDutyGroups() {
-  const next = getNextShift(getCurrentShift());
+   next = getNextShift(getCurrentShift());
   return getGroupsForShift(next.shiftNumber, next.shiftDate);
 }
 
 // ── Status badge CSS classes ─────────────────────────────────
-const STATUS_CLASS = {
+ STATUS_CLASS = {
   Pending: "badge-pending",
   Processing: "badge-processing",
   "Unit Assigned": "badge-assigned",
@@ -145,7 +145,7 @@ const STATUS_CLASS = {
 /** Format a Firestore Timestamp or Date for display. */
 function formatTime(ts) {
   if (!ts) return "—";
-  const d = ts.toDate ? ts.toDate() : new Date(ts);
+   d = ts.toDate ? ts.toDate() : new Date(ts);
   return d.toLocaleString("id-ID", {
     day: "2-digit",
     month: "short",
@@ -162,7 +162,7 @@ function formatTime(ts) {
 function wireOther(selectEl, inputEl) {
   if (!selectEl || !inputEl) return;
   selectEl.addEventListener("change", () => {
-    const isOther = selectEl.value === "Other";
+     isOther = selectEl.value === "Other";
     inputEl.classList.toggle("hidden", !isOther);
     inputEl.required = isOther;
     if (!isOther) inputEl.value = "";
@@ -185,11 +185,11 @@ function resolveValue(selectEl, otherInputEl) {
 function setGroupVisible(groupEl, visible) {
   if (!groupEl) return;
   groupEl.classList.toggle("hidden", !visible);
-  const ctrl = groupEl.querySelector("select, input");
+   ctrl = groupEl.querySelector("select, input");
   if (ctrl) ctrl.required = visible;
   // If hiding, clear the "Other" sub-input too
   if (!visible) {
-    const otherInput = groupEl.querySelector('input[type="text"]');
+     otherInput = groupEl.querySelector('input[type="text"]');
     if (otherInput) {
       otherInput.classList.add("hidden");
       otherInput.required = false;
@@ -204,8 +204,8 @@ function setGroupVisible(groupEl, visible) {
 // ============================================================
 
 function initTabs() {
-  const tabs = document.querySelectorAll(".tab-btn");
-  const sections = document.querySelectorAll(".tab-section");
+   tabs = document.querySelectorAll(".tab-btn");
+   sections = document.querySelectorAll(".tab-section");
 
   function activate(tabId) {
     tabs.forEach((t) => t.classList.toggle("active", t.dataset.tab === tabId));
@@ -230,19 +230,19 @@ function initTabs() {
 // Format: DELTA-DDMMYYYY001, DELTA-DDMMYYYY002, …
 // The counter resets each day — each date gets its own counter doc.
 async function generateRequestId() {
-  const now = new Date();
-  const dd = String(now.getDate()).padStart(2, "0");
-  const mm = String(now.getMonth() + 1).padStart(2, "0");
-  const yyyy = now.getFullYear();
-  const datePart = `${dd}${mm}${yyyy}`;          // e.g. "20022026"
+   now = new Date();
+   dd = String(now.getDate()).padStart(2, "0");
+   mm = String(now.getMonth() + 1).padStart(2, "0");
+   yyyy = now.getFullYear();
+   datePart = `${dd}${mm}${yyyy}`;          // e.g. "20022026"
 
   // One counter document per calendar day in meta/counter-DDMMYYYY
-  const counterRef = doc(db, "meta", `counter-${datePart}`);
+   counterRef = doc(db, "meta", `counter-${datePart}`);
   let newId;
   await runTransaction(db, async (txn) => {
-    const snap = await txn.get(counterRef);
-    const prev = snap.exists() ? snap.data().count : 0;
-    const next = prev + 1;
+     snap = await txn.get(counterRef);
+     prev = snap.exists() ? snap.data().count : 0;
+     next = prev + 1;
     txn.set(counterRef, { count: next });
     newId = `DELTA-${datePart}` + String(next).padStart(3, "0");
   });
@@ -264,11 +264,19 @@ async function saveRequest(data) {
 }
 
 function initSubmitForm() {
-  const form = document.getElementById("requestForm");
-  const msgEl = document.getElementById("formMsg");
-  const successModal = document.getElementById("successModal");
-  const successIdEl = document.getElementById("successId");
-  const newRequestBtn = document.getElementById("newRequestBtn");
+  form = document.getElementById("requestForm");
+  msgEl = document.getElementById("formMsg");
+  successModal = document.getElementById("successModal");
+  successIdEl = document.getElementById("successId");
+  newRequestBtn = document.getElementById("newRequestBtn");
+  const copyRequestIdBtn =
+    document.getElementById("copyRequestIdBtn");
+  const closeSuccessBtn =
+    document.getElementById("closeSuccessBtn");
+  const viewTrackingBtn =
+    document.getElementById("viewTrackingBtn");
+  const shiftInfoBtn =
+    document.getElementById("shiftInfoBtn");
 
   // -- Request Type: show/hide DO NO or INTERN sub-sections
   const requestTypeEl = document.getElementById("requestType");
@@ -425,9 +433,64 @@ function initSubmitForm() {
     }
   });
 
-  newRequestBtn?.addEventListener("click", () =>
-    successModal.classList.remove("open")
-  );
+  newRequestBtn?.addEventListener("click", () => {
+    successModal.classList.remove("open");
+  });
+  
+  closeSuccessBtn?.addEventListener("click", () => {
+    successModal.classList.remove("open");
+  });
+  
+  copyRequestIdBtn?.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(
+        successIdEl.textContent
+      );
+      const oldText =
+        copyRequestIdBtn.textContent;
+      copyRequestIdBtn.textContent =
+        "Copied!";
+      setTimeout(() => {
+        copyRequestIdBtn.textContent =
+          oldText;
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+  viewTrackingBtn?.addEventListener("click", () => {
+    const requestId =
+      successIdEl.textContent;
+    successModal.classList.remove("open");
+    document
+      .querySelector('[data-tab="tracking"]')
+      ?.click();
+    const trackingInput =
+      document.getElementById(
+        "trackSearchId"
+      );
+    if (trackingInput) {
+      trackingInput.value =
+        requestId;
+      document
+        .getElementById(
+          "trackSearchForm"
+        )
+        ?.dispatchEvent(
+          new Event("submit", {
+            bubbles: true,
+            cancelable: true,
+          })
+        );
+    }
+  });
+  
+  shiftInfoBtn?.addEventListener("click", () => {
+    successModal.classList.remove("open");
+    document
+      .querySelector('[data-tab="shift"]')
+      ?.click();
+  });
 }
 
 // ============================================================

@@ -145,7 +145,7 @@ const STATUS_CLASS = {
 /** Format a Firestore Timestamp or Date for display. */
 function formatTime(ts) {
   if (!ts) return "—";
-   d = ts.toDate ? ts.toDate() : new Date(ts);
+   const d = ts.toDate ? ts.toDate() : new Date(ts);
   return d.toLocaleString("id-ID", {
     day: "2-digit",
     month: "short",
@@ -162,7 +162,7 @@ function formatTime(ts) {
 function wireOther(selectEl, inputEl) {
   if (!selectEl || !inputEl) return;
   selectEl.addEventListener("change", () => {
-     isOther = selectEl.value === "Other";
+     const isOther = selectEl.value === "Other";
     inputEl.classList.toggle("hidden", !isOther);
     inputEl.required = isOther;
     if (!isOther) inputEl.value = "";

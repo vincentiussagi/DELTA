@@ -583,7 +583,8 @@ function initTracking() {
         `Failed to query: ${err.message}`;
       errorEl.classList.remove("hidden");
     }
-
+});
+  
   function renderRequestDetails(r) {
     const statusClass = STATUS_CLASS[r.status] || "badge-normal";
 

@@ -258,7 +258,7 @@ async function generateRequestId() {
  */
 async function saveRequest(data) {
   const result = await addDoc(
-    collection(db, "requests"),
+    collection(db, "publicTracking"),
     data
   );
   await setDoc(

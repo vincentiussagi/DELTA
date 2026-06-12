@@ -185,11 +185,15 @@ function resolveValue(selectEl, otherInputEl) {
 function setGroupVisible(groupEl, visible) {
   if (!groupEl) return;
   groupEl.classList.toggle("hidden", !visible);
-   ctrl = groupEl.querySelector("select, input");
+  const ctrl = groupEl.querySelector(
+    "select, input"
+  );
   if (ctrl) ctrl.required = visible;
-  // If hiding, clear the "Other" sub-input too
   if (!visible) {
-     otherInput = groupEl.querySelector('input[type="text"]');
+    const otherInput =
+      groupEl.querySelector(
+        'input[type="text"]'
+      );
     if (otherInput) {
       otherInput.classList.add("hidden");
       otherInput.required = false;
@@ -198,7 +202,6 @@ function setGroupVisible(groupEl, visible) {
     if (ctrl) ctrl.value = "";
   }
 }
-
 // ============================================================
 // TAB NAVIGATION
 // ============================================================

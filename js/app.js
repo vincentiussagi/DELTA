@@ -204,8 +204,8 @@ function setGroupVisible(groupEl, visible) {
 // ============================================================
 
 function initTabs() {
-   tabs = document.querySelectorAll(".tab-btn");
-   sections = document.querySelectorAll(".tab-section");
+   const tabs = document.querySelectorAll(".tab-btn");
+   const sections = document.querySelectorAll(".tab-section");
 
   function activate(tabId) {
     tabs.forEach((t) => t.classList.toggle("active", t.dataset.tab === tabId));
@@ -230,19 +230,19 @@ function initTabs() {
 // Format: DELTA-DDMMYYYY001, DELTA-DDMMYYYY002, …
 // The counter resets each day — each date gets its own counter doc.
 async function generateRequestId() {
-   now = new Date();
-   dd = String(now.getDate()).padStart(2, "0");
-   mm = String(now.getMonth() + 1).padStart(2, "0");
-   yyyy = now.getFullYear();
-   datePart = `${dd}${mm}${yyyy}`;          // e.g. "20022026"
+   const now = new Date();
+   const dd = String(now.getDate()).padStart(2, "0");
+   const mm = String(now.getMonth() + 1).padStart(2, "0");
+   const yyyy = now.getFullYear();
+   const datePart = `${dd}${mm}${yyyy}`;          // e.g. "20022026"
 
   // One counter document per calendar day in meta/counter-DDMMYYYY
-   counterRef = doc(db, "meta", `counter-${datePart}`);
+   const counterRef = doc(db, "meta", `counter-${datePart}`);
   let newId;
   await runTransaction(db, async (txn) => {
-     snap = await txn.get(counterRef);
-     prev = snap.exists() ? snap.data().count : 0;
-     next = prev + 1;
+     const snap = await txn.get(counterRef);
+     const prev = snap.exists() ? snap.data().count : 0;
+     const next = prev + 1;
     txn.set(counterRef, { count: next });
     newId = `DELTA-${datePart}` + String(next).padStart(3, "0");
   });
@@ -264,11 +264,11 @@ async function saveRequest(data) {
 }
 
 function initSubmitForm() {
-  form = document.getElementById("requestForm");
-  msgEl = document.getElementById("formMsg");
-  successModal = document.getElementById("successModal");
-  successIdEl = document.getElementById("successId");
-  newRequestBtn = document.getElementById("newRequestBtn");
+  const form = document.getElementById("requestForm");
+  const msgEl = document.getElementById("formMsg");
+  const successModal = document.getElementById("successModal");
+  const successIdEl = document.getElementById("successId");
+  const newRequestBtn = document.getElementById("newRequestBtn");
   const copyRequestIdBtn =
     document.getElementById("copyRequestIdBtn");
   const closeSuccessBtn =

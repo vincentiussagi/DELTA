@@ -370,12 +370,10 @@
         <div style="padding:14px 20px; border-bottom:1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap;">
           <input type="search" id="dashSearch" placeholder="Cari ID, peminta, Vendor, atau rute..."
             style="flex:1; min-width:200px; max-width:320px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;" />
-          <select id="dashStatusFilter" style="min-width:160px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;">
+          <select id="dashStatusFilter">
             <option value="">Semua Status</option>
             <option>Pending</option>
             <option>Processing</option>
-            <option>Unit Assigned</option>
-            <option>On Delivery</option>
             <option>Completed</option>
             <option>Problem</option>
           </select>
@@ -448,8 +446,6 @@
             <select id="editStatus">
               <option>Pending</option>
               <option>Processing</option>
-              <option>Unit Assigned</option>
-              <option>On Delivery</option>
               <option>Completed</option>
               <option>Problem</option>
             </select>

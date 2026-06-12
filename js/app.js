@@ -116,15 +116,15 @@ function getGroupsForShift(shiftNumber, shiftDate) {
 }
 
 function getCurrentDutyGroups() {
-   { shiftNumber, shiftDate } = getCurrentShift();
+  const { shiftNumber, shiftDate } = getCurrentShift();
   return getGroupsForShift(shiftNumber, shiftDate);
 }
 function getPreviousDutyGroups() {
-   prev = getPreviousShift(getCurrentShift());
+  const prev = getPreviousShift(getCurrentShift());
   return getGroupsForShift(prev.shiftNumber, prev.shiftDate);
 }
 function getNextDutyGroups() {
-   next = getNextShift(getCurrentShift());
+  const next = getNextShift(getCurrentShift());
   return getGroupsForShift(next.shiftNumber, next.shiftDate);
 }
 

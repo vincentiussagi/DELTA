@@ -14,6 +14,7 @@ import {
   collection,
   addDoc,
   doc,
+  setDoc,
   runTransaction,
   updateDoc,
   deleteDoc,
@@ -256,12 +257,23 @@ async function generateRequestId() {
  * Called from the form submit handler below.
  */
 async function saveRequest(data) {
-  // ------------------------------------------------------------
-  // Firestore write: adds a new document to the "requests" collection.
-  // The requestId is stored as a field (not the document ID) so we
-  // can display it to the user independently of Firestore doc IDs.
-  // ------------------------------------------------------------
-  return addDoc(collection(db, "requests"), data);
+  const result = await addDoc(
+    collection(db, "requests"),
+    data
+  );
+  await setDoc(
+    doc(db, "publicTracking", data.requestId),
+    {
+      requestId: data.requestId,
+      status: "Pending",
+      vendor: "",
+      vehicleNumber: "",
+      driverName: "",
+      driverPhone: "",
+      updatedAt: serverTimestamp(),
+    }
+  );
+  return result;
 }
 
 function initSubmitForm() {

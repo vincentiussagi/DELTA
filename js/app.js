@@ -67,10 +67,10 @@ const SHIFT_TIMES = {
 
 /** Return the shift assignment (1, 2, 3, or "OFF") for a group on a local date. */
 function getGroupShiftForDate(group, date) {
-   anchor = new Date(SHIFT_ANCHOR.getFullYear(), SHIFT_ANCHOR.getMonth(), SHIFT_ANCHOR.getDate());
-   d     = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-   diff  = Math.round((d - anchor) / 86_400_000);
-   ci    = ((GROUP_CYCLE_OFFSET[group] + diff) % 12 + 12) % 12;
+   const anchor = new Date(SHIFT_ANCHOR.getFullYear(), SHIFT_ANCHOR.getMonth(), SHIFT_ANCHOR.getDate());
+   const d     = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+   const diff  = Math.round((d - anchor) / 86_400_000);
+   const ci    = ((GROUP_CYCLE_OFFSET[group] + diff) % 12 + 12) % 12;
   return SHIFT_CYCLE[ci];
 }
 
@@ -80,20 +80,20 @@ function getGroupShiftForDate(group, date) {
  * Shift 3 is overnight (23:00–07:00): if hour < 7 the shift started yesterday.
  */
 function getCurrentShift(now = new Date()) {
-   h   = now.getHours();
-   today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const h   = now.getHours();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   if (h >= 7  && h < 15) return { shiftNumber: 1, shiftDate: today };
   if (h >= 15 && h < 23) return { shiftNumber: 2, shiftDate: today };
   if (h >= 23)            return { shiftNumber: 3, shiftDate: today };
   // 00:00–06:59 — Shift 3 that started yesterday
-   yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+  const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
   return { shiftNumber: 3, shiftDate: yesterday };
 }
 
 /** Shift immediately before the given shift. */
 function getPreviousShift({ shiftNumber, shiftDate }) {
   if (shiftNumber === 1) {
-     prev = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() - 1);
+    const prev = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() - 1);
     return { shiftNumber: 3, shiftDate: prev };
   }
   if (shiftNumber === 2) return { shiftNumber: 1, shiftDate };
@@ -104,7 +104,7 @@ function getPreviousShift({ shiftNumber, shiftDate }) {
 function getNextShift({ shiftNumber, shiftDate }) {
   if (shiftNumber === 1) return { shiftNumber: 2, shiftDate };
   if (shiftNumber === 2) return { shiftNumber: 3, shiftDate };
-   next = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() + 1);
+  const next = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() + 1);
   return { shiftNumber: 1, shiftDate: next };
 }
 

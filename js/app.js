@@ -129,7 +129,7 @@ function getNextDutyGroups() {
 }
 
 // ── Status badge CSS classes ─────────────────────────────────
- STATUS_CLASS = {
+const STATUS_CLASS = {
   Pending: "badge-pending",
   Processing: "badge-processing",
   "Unit Assigned": "badge-assigned",

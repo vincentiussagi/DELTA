@@ -589,14 +589,7 @@ function initTracking() {
     // Find index of current status. If problem, look for last known state (e.g. check driver/vendor assignments)
     let currentIdx = statuses.indexOf(r.status);
     if (isProblem) {
-      // Logic to deduce where it failed:
-      if (r.driverName || r.vehicleNumber) {
-        currentIdx = 3; // "On Delivery" or "Unit Assigned" failed. Let's show it at Step 4 (On Delivery) / Index 3
-      } else if (r.vendor) {
-        currentIdx = 2; // "Unit Assigned" failed. Step 3 / Index 2
-      } else {
-        currentIdx = 1; // "Processing" failed. Step 2 / Index 1
-      }
+      currentIdx = 1;
     }
 
     // Set percentage

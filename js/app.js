@@ -15,6 +15,7 @@ import {
   addDoc,
   doc,
   setDoc,
+  getDoc,
   runTransaction,
   updateDoc,
   deleteDoc,
@@ -258,7 +259,7 @@ async function generateRequestId() {
  */
 async function saveRequest(data) {
   const result = await addDoc(
-    collection(db, "publicTracking"),
+    collection(db, "requests"),
     data
   );
   await setDoc(
@@ -554,39 +555,34 @@ function initTracking() {
     resultEl.innerHTML = "";
 
     try {
-      const q = query(
-        collection(db, "requests"),
-        where("requestId", "==", searchId)
-      );
-
-      trackUnsubscribe = onSnapshot(q, (snap) => {
+      getDoc(
+        doc(db, "publicTracking", searchId)
+      ).then((snap) => {
         loadingEl.classList.add("hidden");
-
-        if (snap.empty) {
-          errorMsgEl.textContent = `No delivery request was found with ID "${searchId}". Please check the ID and try again.`;
+        if (!snap.exists()) {
+          errorMsgEl.textContent =
+            `Request ID "${searchId}" tidak ditemukan.`;
           errorEl.classList.remove("hidden");
-          resultEl.classList.add("hidden");
           return;
         }
-
-        const r = snap.docs[0].data();
+        const r = snap.data();
         errorEl.classList.add("hidden");
         renderRequestDetails(r);
         resultEl.classList.remove("hidden");
-      }, (error) => {
-        console.error("Firestore tracking error:", error);
+      }).catch((error) => {
+        console.error(error);
         loadingEl.classList.add("hidden");
-        errorMsgEl.textContent = `An error occurred while fetching tracking details: ${error.message}`;
+        errorMsgEl.textContent =
+          `Error: ${error.message}`;
         errorEl.classList.remove("hidden");
-        resultEl.classList.add("hidden");
       });
     } catch (err) {
       console.error(err);
       loadingEl.classList.add("hidden");
-      errorMsgEl.textContent = `Failed to query: ${err.message}`;
+      errorMsgEl.textContent =
+        `Failed to query: ${err.message}`;
       errorEl.classList.remove("hidden");
     }
-  });
 
   function renderRequestDetails(r) {
     const statusClass = STATUS_CLASS[r.status] || "badge-normal";
@@ -925,13 +921,24 @@ function loadDashboardTable() {
   }
 
   let allRows = [];
+  const q = query(
+    collection(db, "requests"),
+    orderBy("requestTime", "desc")
+  );
+  
+  onSnapshot(q, (snap) => {
+    loadingEl?.classList.add("hidden");
+  
+    allRows = snap.docs.map((d) => ({
+      _id: d.id,
+      ...d.data(),
+    }));
+  
+    renderStatusSummary(allRows);
+    renderDash();
+  });
 
   // Real-time listener for dashboard table
-const q = query(
-  collection(db, "publicTracking"),
-  where("requestId", "==", searchId)
-);
-trackUnsubscribe = onSnapshot(q, (snap) => {
   // Clicking a pill sets the status filter and re-renders
   window.__setStatusFilter = (status) => {
     if (statusFilter) statusFilter.value = status;

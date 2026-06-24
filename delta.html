@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>DELTA — DCO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #1a3a6b;
+      --primary-light: #2a5298;
+      --primary-dark: #0f2444;
+      --accent: #e8a020;
+      --bg: #f4f6fa;
+      --card: #ffffff;
+      --border: #d0d7e3;
+      --text: #1e2735;
+      --text-muted: #6b7a95;
+      --danger: #dc2626;
+      --radius: 8px;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-lg: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      background: var(--primary);
+      color: white;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; color: white; font-weight: 700; font-size: 18px; }
+    .nav-brand .badge-dco {
+      background: var(--accent);
+      color: var(--primary-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── TABS ── */
+    .tab-nav {
+      background: var(--primary-dark);
+      display: flex;
+      gap: 2px;
+      padding: 0 20px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.65);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 11px 18px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+    .tab-btn:hover { color: rgba(255,255,255,0.9); }
+    .tab-btn.active { color: white; border-bottom-color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .container    { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
+    .container-sm { max-width: 600px;  margin: 0 auto; padding: 32px 20px; }
+    .page-header  { margin-bottom: 28px; }
+    .page-header h1 { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .page-header p  { color: var(--text-muted); font-size: 13.5px; }
+
+    /* ── CARD ── */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .card-header {
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-header h2 { font-size: 15px; font-weight: 600; color: var(--primary); }
+    .card-body { padding: 24px; }
+
+    /* ── FORM ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    label { font-weight: 600; font-size: 13px; color: var(--text); }
+    label .req { color: var(--danger); margin-left: 2px; }
+
+    input, select, textarea {
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 14px;
+      color: var(--text);
+      background: white;
+      width: 100%;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(42,82,152,0.1);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .form-section {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: #f8fafc;
+      margin-top: 4px;
+    }
+    .form-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+      margin-bottom: 14px;
+    }
+
+    /* ── RADIO CARDS ── */
+    .radio-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 10px 18px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .radio-card input[type="radio"] { width: auto; margin: 0; cursor: pointer; }
+    .radio-card.selected { border-color: var(--primary); background: #f0f4ff; color: var(--primary); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      border-radius: 6px; font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .btn-primary  { background: var(--primary); color: white; }
+    .btn-primary:hover  { background: var(--primary-dark); }
+    .btn-sm       { padding: 6px 12px; font-size: 12.5px; }
+    .btn-outline  { background: white; border: 1.5px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--primary-light); color: var(--primary); }
+    .btn-danger   { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 600; white-space: nowrap;
+    }
+    .badge-pending   { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+    .badge-completed { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .badge-problem   { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .badge-normal    { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+    /* ── ALERT ── */
+    .alert { padding: 12px 16px; border-radius: var(--radius); font-size: 13.5px; margin-bottom: 20px; }
+    .alert-error { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th {
+      background: #f8fafc; padding: 11px 14px; text-align: left;
+      font-weight: 600; font-size: 12.5px; text-transform: uppercase;
+      letter-spacing: 0.3px; color: var(--text-muted);
+      border-bottom: 2px solid var(--border); white-space: nowrap;
+    }
+    td { padding: 11px 14px; border-bottom: 1px solid #eef1f6; vertical-align: middle; }
+    tr:hover td { background: #f8faff; }
+    tr:last-child td { border-bottom: none; }
+
+    /* ── STATUS SUMMARY ── */
+    .status-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .summary-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 8px; padding: 8px 14px;
+      cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      font-family: inherit;
+    }
+    .summary-pill:hover { border-color: var(--primary-light); box-shadow: 0 2px 8px rgba(42,82,152,0.1); }
+    .summary-pill.active { border-color: var(--primary); background: #f0f4ff; }
+    .summary-pill-label { font-size: 13px; font-weight: 600; color: var(--text); }
+    .summary-pill-count { font-size: 18px; font-weight: 800; color: var(--primary); min-width: 20px; text-align: right; }
+
+    /* ── SHIFT CARDS ── */
+    .shift-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .shift-card { border: 1.5px solid var(--border); border-radius: var(--radius); padding: 20px; background: white; }
+    .shift-card.current {
+      border-color: var(--primary-light);
+      background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+      box-shadow: 0 2px 12px rgba(30,58,138,0.08);
+    }
+    .shift-label { font-size: 11px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px; color: var(--text-muted); }
+    .shift-label.current { color: var(--primary); }
+    .shift-number { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .shift-card.current .shift-number { color: var(--primary); }
+    .shift-time { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+    .shift-groups { display: flex; flex-direction: column; gap: 12px; }
+    .shift-group-badge {
+      display: inline-block; background: var(--primary); color: white;
+      font-size: 11px; font-weight: 700; padding: 2px 9px;
+      border-radius: 12px; margin-bottom: 8px; letter-spacing: 0.3px;
+    }
+    .shift-officers { display: flex; flex-direction: column; }
+    .shift-officer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0; border-bottom: 1px solid var(--border); gap: 10px;
+    }
+    .shift-officer:last-child { border-bottom: none; }
+    .shift-officer-name { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+    .wa-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 600; color: #16a34a;
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+    }
+    .wa-link:hover { text-decoration: underline; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 200;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white; border-radius: 10px;
+      box-shadow: var(--shadow-lg); width: 100%; max-width: 520px;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-header {
+      padding: 18px 22px 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--primary); }
+    .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); line-height: 1; font-family: inherit; }
+    .modal-close:hover { color: var(--text); }
+    .modal-body { padding: 22px; }
+    .modal-footer { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+    /* ── LOADING ── */
+    .loading { display: flex; align-items: center; justify-content: center; padding: 48px; color: var(--text-muted); gap: 10px; }
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2.5px solid var(--border); border-top-color: var(--primary);
+      border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── MISC ── */
+    .req-id { font-family: monospace; font-size: 13px; font-weight: 700; color: var(--primary); }
+    .success-circle {
+      width: 64px; height: 64px;
+      background: #dcfce7; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px; font-size: 28px;
+    }
+    .status-radio-row {
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; padding: 11px 14px;
+      border: 2px solid var(--border); border-radius: 8px;
+      background: white; font-weight: 600; font-size: 14px;
+      transition: all 0.15s; user-select: none;
+    }
+    .status-radio-row input[type="radio"] { width: auto; margin: 0; cursor: pointer; }
+    .status-radio-row.selected { border-color: var(--primary); background: #f0f4ff; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .full { grid-column: 1; }
+      .shift-grid { grid-template-columns: 1fr; }
+      .container  { padding: 20px 14px; }
+      .container-sm { padding: 20px 14px; }
+      .nav { padding: 0 14px; }
+      .nav-brand { font-size: 16px; }
+      table { font-size: 12.5px; }
+      th, td { padding: 9px 10px; }
+      .modal { max-width: 98%; }
+      .card-body { padding: 16px; }
+      .tab-btn { padding: 10px 14px; font-size: 13px; }
+    }
+    @media (max-width: 480px) {
+      .nav-brand { font-size: 15px; }
+      .page-header h1 { font-size: 19px; }
+      .btn { padding: 9px 16px; }
+      .summary-pill-count { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="nav">
+    <span class="nav-brand">DELTA <span class="badge-dco">DCO</span></span>
+  </nav>
+
+  <!-- ── TAB NAV ── -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="submit">Buat Request</button>
+    <button class="tab-btn" data-tab="dashboard">Dashboard DCO</button>
+    <button class="tab-btn" data-tab="shift">Informasi Shift</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TAB: BUAT REQUEST
+  ══════════════════════════════════════════ -->
+  <div id="tab-submit">
+    <div class="container-sm">
+      <div class="page-header">
+        <h1>Delivery Request</h1>
+        <p>Lengkapi form berikut untuk membuat delivery request. Tidak perlu login.</p>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>Detail Request</h2></div>
+        <div class="card-body">
+          <div id="submitAlert" class="alert alert-error" style="display:none"></div>
+          <form id="requestForm" novalidate>
+            <div class="form-grid">
+
+              <div class="form-group">
+                <label for="requesterName">Nama Peminta <span class="req">*</span></label>
+                <input type="text" id="requesterName" required placeholder="Masukkan Nama" />
+              </div>
+
+              <div class="form-group">
+                <label for="department">Departmen <span class="req">*</span></label>
+                <select id="department" required>
+                  <option value="">— Pilih Departemen —</option>
+                  <option>BU17</option><option>BU19</option><option>PM3</option>
+                  <option>PM1</option><option>RMD</option><option>Other</option>
+                </select>
+                <input type="text" id="departmentOther" placeholder="Nama departemen" style="display:none;margin-top:6px" />
+              </div>
+
+              <div class="form-group full">
+                <label for="contactNumber">No. HP <span class="req">*</span></label>
+                <input type="tel" id="contactNumber" required placeholder="cth. 0812-xxxx-xxxx" style="max-width:260px" />
+              </div>
+
+              <div class="form-group full">
+                <label>Jenis Pengiriman <span class="req">*</span></label>
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                  <label class="radio-card">
+                    <input type="radio" name="requestType" value="DO NO" />
+                    DO NO
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="requestType" value="INTERN" />
+                    INTERN
+                  </label>
+                </div>
+              </div>
+
+              <div class="full" id="sectionDoNo" style="display:none">
+                <div class="form-section">
+                  <div class="form-section-title">Detail DO NO</div>
+                  <div class="form-group" style="max-width:320px">
+                    <label for="doNumber">Nomor DO <span class="req">*</span></label>
+                    <input type="text" id="doNumber" placeholder="cth. RM/001, RM2/002, OCB/003" />
+                  </div>
+                  <div id="routeDetect" style="margin-top:12px;display:none"></div>
+                </div>
+              </div>
+
+              <div class="full" id="sectionIntern" style="display:none">
+                <div class="form-section">
+                  <div class="form-section-title">Detail INTERN</div>
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="internOrigin">Gudang Asal <span class="req">*</span></label>
+                      <input type="text" id="internOrigin" placeholder="cth. Gudang BU17" />
+                    </div>
+                    <div class="form-group">
+                      <label for="internDest">Gudang Tujuan <span class="req">*</span></label>
+                      <input type="text" id="internDest" placeholder="cth. Gudang PM3" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div style="margin-top:24px;display:flex;justify-content:flex-end">
+              <button type="submit" id="btnSubmit" class="btn btn-primary" style="min-width:160px">Submit Request</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TAB: DASHBOARD DCO
+  ══════════════════════════════════════════ -->
+  <div id="tab-dashboard" style="display:none">
+
+    <div id="dashLogin" class="container">
+      <div style="max-width:400px;margin:48px auto">
+        <div class="page-header" style="text-align:center">
+          <h1>Dashboard DCO</h1>
+          <p>Masuk menggunakan akun DCO untuk mengakses Dashboard.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h2>Login DCO</h2></div>
+          <div class="card-body">
+            <div id="loginAlert" class="alert alert-error" style="display:none"></div>
+            <form id="loginForm" novalidate>
+              <div class="form-group" style="margin-bottom:14px">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required placeholder="officer@company.com" autocomplete="email" />
+              </div>
+              <div class="form-group" style="margin-bottom:20px">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required placeholder="password" autocomplete="current-password" />
+              </div>
+              <button type="submit" id="btnLogin" class="btn btn-primary" style="width:100%;justify-content:center">Masuk</button>
+            </form>
+          </div>
+        </div>
+        <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text-muted)">
+          Portal ini hanya dapat diakses oleh petugas DCO.
+        </p>
+      </div>
+    </div>
+
+    <div id="dashMain" style="display:none;padding:24px 20px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <h1 style="font-size:22px;font-weight:700;color:var(--primary)">Dashboard DCO</h1>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span id="userEmail" style="font-size:13px;color:var(--text-muted)"></span>
+          <button id="btnLogout" class="btn btn-sm btn-outline">Keluar</button>
+        </div>
+      </div>
+
+      <div id="statusSummary" class="status-summary"></div>
+
+      <div class="card" style="width:100%">
+        <div class="card-header">
+          <h2>Semua Delivery Request</h2>
+          <span id="rowCount" style="font-size:12.5px;color:var(--text-muted)"></span>
+        </div>
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <input type="search" id="dashSearch" placeholder="Cari ID, nama, departemen, atau rute..."
+            style="flex:1;min-width:180px;max-width:340px;border:1.5px solid var(--border);border-radius:6px;padding:8px 12px;font-size:14px;font-family:inherit" />
+          <select id="dashStatusFilter" style="border:1.5px solid var(--border);border-radius:6px;padding:8px 12px;font-size:14px;font-family:inherit">
+            <option value="">Semua Status</option>
+            <option>Pending</option><option>Completed</option><option>Problem</option>
+          </select>
+        </div>
+        <div id="tableWrap" style="overflow-x:auto;width:100%">
+          <div class="loading"><div class="spinner"></div> Memuat data...</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TAB: INFORMASI SHIFT
+  ══════════════════════════════════════════ -->
+  <div id="tab-shift" style="display:none">
+    <div class="container">
+      <div class="page-header" id="shiftHeader">
+        <h1>Informasi Shift</h1>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>DCO On-Duty</h2></div>
+        <div class="card-body">
+          <div id="shiftGrid" class="shift-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MODAL: SUCCESS
+  ══════════════════════════════════════════ -->
+  <div id="modalSuccess" class="modal-overlay">
+    <div class="modal" style="max-width:480px">
+      <div class="modal-body" style="padding:28px 24px">
+        <div class="success-circle">✓</div>
+        <h3 style="font-size:18px;font-weight:700;color:#15803d;text-align:center;margin-bottom:6px">Request Berhasil Dibuat!</h3>
+        <p style="text-align:center;color:var(--text-muted);font-size:13.5px;margin-bottom:20px">Request delivery Anda telah berhasil dibuat.</p>
+
+        <div style="background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:16px;text-align:center;margin-bottom:20px">
+          <div style="font-size:12px;color:#15803d;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Request ID</div>
+          <div id="successReqId" style="font-size:22px;font-weight:800;color:#15803d;font-family:monospace;letter-spacing:2px;margin-bottom:10px"></div>
+          <button id="btnCopyId" class="btn btn-sm" style="background:white;border:1.5px solid #86efac;color:#15803d;font-weight:700">Salin Request ID</button>
+        </div>
+
+        <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:10px;padding:16px;margin-bottom:20px">
+          <div style="font-size:13px;font-weight:700;color:#1e40af;margin-bottom:8px">📋 Langkah Selanjutnya</div>
+          <p style="font-size:13px;color:#1e3a8a;line-height:1.6;margin:0">
+            Silakan salin <strong>Request ID</strong> di atas, lalu hubungi DCO yang sedang bertugas untuk proses lebih lanjut.
+          </p>
+        </div>
+
+        <div id="successOfficers" style="border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;display:none"></div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button id="btnSuccessShift" class="btn btn-primary" style="justify-content:center">Informasi Shift DCO</button>
+          <button id="btnSuccessNew" class="btn btn-outline" style="justify-content:center">Buat Request Baru</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MODAL: EDIT STATUS
+  ══════════════════════════════════════════ -->
+  <div id="modalEdit" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="editModalTitle">Update Status</h3>
+        <button class="modal-close" id="btnEditClose">×</button>
+      </div>
+      <form id="editForm">
+        <div class="modal-body">
+          <p id="editModalSub" style="color:var(--text-muted);font-size:13px;margin-bottom:18px"></p>
+          <div id="editAlert" style="color:var(--danger);font-size:13px;margin-bottom:10px;display:none"></div>
+          <div class="form-group">
+            <label>Status <span class="req">*</span></label>
+            <div id="editStatusOptions" style="display:flex;flex-direction:column;gap:10px;margin-top:4px"></div>
+          </div>
+        </div>
+        <div class="modal-footer" style="justify-content:space-between">
+          <button type="button" id="btnDeleteRow" class="btn btn-danger btn-sm">Hapus</button>
+          <div style="display:flex;gap:10px">
+            <button type="button" id="btnEditCancel" class="btn btn-outline">Batal</button>
+            <button type="submit" id="btnEditSave" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import {
+      getFirestore, collection, addDoc, doc, setDoc, runTransaction,
+      serverTimestamp, query, orderBy, onSnapshot, updateDoc, deleteDoc,
+    } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+    import {
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
+    // ── FIREBASE INIT ──
+    const app = initializeApp({
+      apiKey: "AIzaSyD0FgVMF15B9P44TdM8KvTce2vJMdCg_uw",
+      authDomain: "delta-dco.firebaseapp.com",
+      projectId: "delta-dco",
+      storageBucket: "delta-dco.firebasestorage.app",
+      messagingSenderId: "997044342555",
+      appId: "1:997044342555:web:594f1a0609b406a4bd4dbe",
+    });
+    const db   = getFirestore(app);
+    const auth = getAuth(app);
+
+    // ── SHIFT DATA ──
+    const SHIFT_GROUPS = {
+      A: [
+        { name: "Tedi Hidayat",                        phone: "6287861511291" },
+        { name: "Vincentius Sagi Alban Anindyajati",   phone: "6288212237414" },
+      ],
+      B: [
+        { name: "Azmi Awaldi Lubis",  phone: "6282161074914" },
+        { name: "Bayu Nugraha",       phone: "6285156769654" },
+      ],
+      C: [
+        { name: "Tulus Nicholas Manalu", phone: "628973362244"  },
+        { name: "Dennidzar Alghifary",   phone: "6281210162845" },
+      ],
+      D: [
+        { name: "Musi Hardiyanto Wijaya", phone: "6281383924081" },
+        { name: "Akbar Ardiansyah",       phone: "6285163226093" },
+      ],
+    };
+    const SHIFT_CYCLE  = [3, 3, 3, "OFF", 2, 2, 2, "OFF", 1, 1, 1, "OFF"];
+    const GROUP_OFFSET = { A: 9, B: 3, C: 0, D: 6 };
+    const SHIFT_ANCHOR = new Date(2026, 5, 2);
+    const SHIFT_TIMES  = { 1: "07:00 – 15:00", 2: "15:00 – 23:00", 3: "23:00 – 07:00" };
+
+    function getGroupShiftForDate(group, date) {
+      const anchor = new Date(SHIFT_ANCHOR.getFullYear(), SHIFT_ANCHOR.getMonth(), SHIFT_ANCHOR.getDate());
+      const d      = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const diff   = Math.round((d - anchor) / 86_400_000);
+      const ci     = ((GROUP_OFFSET[group] + diff) % 12 + 12) % 12;
+      return SHIFT_CYCLE[ci];
+    }
+
+    function getCurrentShift(now = new Date()) {
+      const h     = now.getHours();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      if (h >= 7  && h < 15) return { shiftNumber: 1, shiftDate: today };
+      if (h >= 15 && h < 23) return { shiftNumber: 2, shiftDate: today };
+      if (h >= 23)            return { shiftNumber: 3, shiftDate: today };
+      const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+      return { shiftNumber: 3, shiftDate: yesterday };
+    }
+
+    function getPreviousShift({ shiftNumber, shiftDate }) {
+      if (shiftNumber === 1) {
+        const prev = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() - 1);
+        return { shiftNumber: 3, shiftDate: prev };
+      }
+      return { shiftNumber: shiftNumber - 1, shiftDate };
+    }
+
+    function getNextShift({ shiftNumber, shiftDate }) {
+      if (shiftNumber === 3) {
+        const next = new Date(shiftDate.getFullYear(), shiftDate.getMonth(), shiftDate.getDate() + 1);
+        return { shiftNumber: 1, shiftDate: next };
+      }
+      return { shiftNumber: shiftNumber + 1, shiftDate };
+    }
+
+    function getGroupsForShift(shiftNumber, shiftDate) {
+      return ["A","B","C","D"].filter(g => getGroupShiftForDate(g, shiftDate) === shiftNumber);
+    }
+
+    function getCurrentOnDutyOfficers() {
+      const shift  = getCurrentShift();
+      const groups = getGroupsForShift(shift.shiftNumber, shift.shiftDate);
+      const out    = [];
+      for (const g of groups)
+        for (const o of SHIFT_GROUPS[g])
+          out.push({ ...o, group: g });
+      return out;
+    }
+
+    // ── HELPERS ──
+    const STATUS_CLASS = { Pending: "badge-pending", Completed: "badge-completed", Problem: "badge-problem" };
+    const ALL_STATUSES = ["Pending", "Completed", "Problem"];
+
+    function detectRoute(doNumber) {
+      const u = (doNumber || "").trim().toUpperCase();
+      if (u.startsWith("RM2/") || u.startsWith("OCB/")) return { originMill: "PD2", destinationMill: "IKK" };
+      if (u.startsWith("RM/"))                            return { originMill: "IKK", destinationMill: "PD2" };
+      return null;
+    }
+
+    function routeStr(r) {
+      if (r.requestType === "INTERN")
+        return `${r.originWarehouse || "—"} → ${r.destinationWarehouse || "—"}`;
+      const o = r.originMill || "", d = r.destinationMill || "";
+      return o && d ? `${o} → ${d}` : o || d || "—";
+    }
+
+    function formatTime(ts) {
+      if (!ts) return "—";
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleString("id-ID", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" });
+    }
+
+    function esc(s) {
+      return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+    }
+
+    async function generateRequestId() {
+      const now  = new Date();
+      const dd   = String(now.getDate()).padStart(2,"0");
+      const mm   = String(now.getMonth()+1).padStart(2,"0");
+      const yyyy = now.getFullYear();
+      const part = `${dd}${mm}${yyyy}`;
+      const ref  = doc(db, "meta", `counter-${part}`);
+      let id = "";
+      await runTransaction(db, async txn => {
+        const snap = await txn.get(ref);
+        const next = (snap.exists() ? snap.data().count : 0) + 1;
+        txn.set(ref, { count: next });
+        id = `DELTA-${part}` + String(next).padStart(3,"0");
+      });
+      return id;
+    }
+
+    function showAlert(el, msg, ms = 6000) {
+      el.textContent = msg;
+      el.style.display = "block";
+      setTimeout(() => { el.style.display = "none"; }, ms);
+    }
+
+    // ── TAB SWITCHING ──
+    const tabPanes = {
+      submit:    document.getElementById("tab-submit"),
+      dashboard: document.getElementById("tab-dashboard"),
+      shift:     document.getElementById("tab-shift"),
+    };
+
+    function switchTab(id) {
+      Object.entries(tabPanes).forEach(([k, el]) => el.style.display = k === id ? "block" : "none");
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === id));
+      if (id === "shift")     renderShiftInfo();
+      if (id === "dashboard") initDashboard();
+    }
+
+    document.querySelectorAll(".tab-btn").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.tab)));
+
+    // ── SUBMIT FORM ──
+    const form         = document.getElementById("requestForm");
+    const deptSel      = document.getElementById("department");
+    const deptOther    = document.getElementById("departmentOther");
+    const sectionDoNo  = document.getElementById("sectionDoNo");
+    const sectionInt   = document.getElementById("sectionIntern");
+    const doInput      = document.getElementById("doNumber");
+    const routeDetect  = document.getElementById("routeDetect");
+    const submitAlert  = document.getElementById("submitAlert");
+    const btnSubmit    = document.getElementById("btnSubmit");
+
+    deptSel.addEventListener("change", () => {
+      deptOther.style.display = deptSel.value === "Other" ? "block" : "none";
+      if (deptSel.value !== "Other") deptOther.value = "";
+    });
+
+    function updateRadioCards() {
+      const checked = form.querySelector("input[name='requestType']:checked");
+      document.querySelectorAll(".radio-card").forEach(lbl => {
+        lbl.classList.toggle("selected", lbl.querySelector("input") === checked);
+      });
+      const val = checked ? checked.value : "";
+      sectionDoNo.style.display = val === "DO NO"  ? "block" : "none";
+      sectionInt.style.display  = val === "INTERN" ? "block" : "none";
+      if (val !== "DO NO")  { doInput.value = ""; routeDetect.style.display = "none"; }
+      if (val !== "INTERN") {
+        document.getElementById("internOrigin").value = "";
+        document.getElementById("internDest").value   = "";
+      }
+    }
+    form.querySelectorAll("input[name='requestType']").forEach(r => r.addEventListener("change", updateRadioCards));
+
+    doInput.addEventListener("input", () => {
+      const v = doInput.value.trim();
+      if (!v) { routeDetect.style.display = "none"; return; }
+      const route = detectRoute(v);
+      routeDetect.style.display = "block";
+      if (route) {
+        routeDetect.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #86efac">
+          <span style="font-size:16px">✓</span>
+          <div>
+            <span style="font-size:12px;color:#15803d;font-weight:700;display:block">Rute Terdeteksi</span>
+            <span style="font-size:14px;font-weight:700;color:#15803d">${route.originMill} → ${route.destinationMill}</span>
+          </div></div>`;
+      } else {
+        routeDetect.innerHTML = `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fef9c3;border-radius:8px;border:1px solid #fde047">
+          <span style="font-size:16px">⚠️</span>
+          <div>
+            <span style="font-size:12px;color:#854d0e;font-weight:700;display:block">Rute Tidak Terdeteksi</span>
+            <span style="font-size:13px;color:#854d0e">Nomor DO harus diawali dengan RM/, RM2/, atau OCB/</span>
+          </div></div>`;
+      }
+    });
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      submitAlert.style.display = "none";
+
+      const name   = document.getElementById("requesterName").value.trim();
+      const dept   = deptSel.value === "Other" ? deptOther.value.trim() : deptSel.value;
+      const phone  = document.getElementById("contactNumber").value.trim();
+      const typeEl = form.querySelector("input[name='requestType']:checked");
+      const type   = typeEl ? typeEl.value : "";
+
+      if (!name || !dept || !phone || !type) {
+        showAlert(submitAlert, "Harap lengkapi semua field yang diperlukan."); return;
+      }
+
+      let originMill = "", destinationMill = "", originWarehouse = "", destinationWarehouse = "", doNumber = "";
+
+      if (type === "DO NO") {
+        doNumber = doInput.value.trim();
+        if (!doNumber) { showAlert(submitAlert, "Masukkan Nomor DO."); return; }
+        const route = detectRoute(doNumber);
+        if (!route)   { showAlert(submitAlert, "Nomor DO tidak valid. Harus diawali dengan RM/, RM2/, atau OCB/"); return; }
+        originMill      = route.originMill;
+        destinationMill = route.destinationMill;
+      } else {
+        originWarehouse      = document.getElementById("internOrigin").value.trim();
+        destinationWarehouse = document.getElementById("internDest").value.trim();
+        if (!originWarehouse || !destinationWarehouse) {
+          showAlert(submitAlert, "Harap isi Gudang Asal dan Gudang Tujuan."); return;
+        }
+      }
+
+      btnSubmit.disabled    = true;
+      btnSubmit.textContent = "Memproses…";
+
+      try {
+        const requestId = await generateRequestId();
+        await addDoc(collection(db, "requests"), {
+          requestId, requestTime: serverTimestamp(),
+          requesterName: name, department: dept, contactNumber: phone,
+          requestType: type, doNumber, originMill, destinationMill,
+          originWarehouse, destinationWarehouse,
+          status: "Pending", lastUpdated: serverTimestamp(),
+        });
+        await setDoc(doc(db, "publicTracking", requestId), {
+          requestId, status: "Pending", updatedAt: serverTimestamp(),
+        });
+
+        form.reset();
+        deptOther.style.display = "none";
+        sectionDoNo.style.display = sectionInt.style.display = "none";
+        routeDetect.style.display = "none";
+        document.querySelectorAll(".radio-card").forEach(l => l.classList.remove("selected"));
+        showSuccessModal(requestId);
+      } catch (err) {
+        showAlert(submitAlert, "Error: " + err.message);
+      } finally {
+        btnSubmit.disabled    = false;
+        btnSubmit.textContent = "Submit Request";
+      }
+    });
+
+    // ── SUCCESS MODAL ──
+    const modalSuccess = document.getElementById("modalSuccess");
+
+    function showSuccessModal(requestId) {
+      document.getElementById("successReqId").textContent = requestId;
+
+      const officers    = getCurrentOnDutyOfficers();
+      const shift       = getCurrentShift();
+      const shiftLabel  = `Shift ${shift.shiftNumber} (${SHIFT_TIMES[shift.shiftNumber]})`;
+      const officersEl  = document.getElementById("successOfficers");
+
+      if (officers.length > 0) {
+        let html = `<div style="background:var(--primary);color:white;padding:10px 14px;font-size:13px;font-weight:700">👷 DCO On Duty — ${esc(shiftLabel)}</div>`;
+        officers.forEach((o, i) => {
+          const border = i < officers.length - 1 ? "border-bottom:1px solid var(--border)" : "";
+          html += `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;${border};gap:10px">
+            <div>
+              <div style="font-size:13.5px;font-weight:600;color:var(--text)">${esc(o.name)}</div>
+              <div style="font-size:11.5px;color:var(--text-muted)">Group ${esc(o.group)}</div>
+            </div>
+            <a href="https://wa.me/${esc(o.phone)}" target="_blank" rel="noopener" class="wa-link"
+              style="padding:6px 12px;background:#dcfce7;border-radius:6px;border:1px solid #86efac;flex-shrink:0">
+              📱 WhatsApp
+            </a></div>`;
+        });
+        officersEl.innerHTML    = html;
+        officersEl.style.display = "block";
+      } else {
+        officersEl.style.display = "none";
+      }
+      modalSuccess.classList.add("open");
+    }
+
+    document.getElementById("btnCopyId").addEventListener("click", async () => {
+      const id  = document.getElementById("successReqId").textContent;
+      const btn = document.getElementById("btnCopyId");
+      try {
+        await navigator.clipboard.writeText(id);
+        btn.textContent      = "✓ Tersalin!";
+        btn.style.background = "#dcfce7";
+        setTimeout(() => { btn.textContent = "Salin Request ID"; btn.style.background = "white"; }, 1800);
+      } catch {}
+    });
+
+    document.getElementById("btnSuccessShift").addEventListener("click", () => {
+      modalSuccess.classList.remove("open"); switchTab("shift");
+    });
+    document.getElementById("btnSuccessNew").addEventListener("click", () => modalSuccess.classList.remove("open"));
+    modalSuccess.addEventListener("click", e => { if (e.target === modalSuccess) modalSuccess.classList.remove("open"); });
+
+    // ── DASHBOARD AUTH ──
+    let dashUnsubscribe  = null;
+    let allRows          = [];
+    let statusFilter     = "";
+    let dashInitialized  = false;
+
+    const dashLogin = document.getElementById("dashLogin");
+    const dashMain  = document.getElementById("dashMain");
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        dashLogin.style.display = "none";
+        dashMain.style.display  = "block";
+        document.getElementById("userEmail").textContent = user.email;
+        startDashListener();
+      } else {
+        dashLogin.style.display = "block";
+        dashMain.style.display  = "none";
+        if (dashUnsubscribe) { dashUnsubscribe(); dashUnsubscribe = null; }
+        allRows = [];
+      }
+    });
+
+    function initDashboard() {
+      if (dashInitialized) return;
+      dashInitialized = true;
+
+      document.getElementById("loginForm").addEventListener("submit", async e => {
+        e.preventDefault();
+        const alertEl = document.getElementById("loginAlert");
+        const btnEl   = document.getElementById("btnLogin");
+        alertEl.style.display = "none";
+        btnEl.disabled = true; btnEl.textContent = "Masuk…";
+        try {
+          await signInWithEmailAndPassword(auth,
+            document.getElementById("loginEmail").value,
+            document.getElementById("loginPassword").value);
+        } catch (err) {
+          const c = err.code || "";
+          let msg = "Login gagal. Periksa kembali kredensial Anda.";
+          if (c === "auth/wrong-password" || c === "auth/invalid-credential") msg = "Password salah.";
+          else if (c === "auth/user-not-found") msg = "Akun tidak ditemukan.";
+          else if (c === "auth/invalid-email")  msg = "Format email tidak valid.";
+          else if (c === "auth/too-many-requests") msg = "Terlalu banyak percobaan. Coba lagi nanti.";
+          alertEl.textContent    = msg;
+          alertEl.style.display  = "block";
+        } finally {
+          btnEl.disabled = false; btnEl.textContent = "Masuk";
+        }
+      });
+
+      document.getElementById("btnLogout").addEventListener("click", () => signOut(auth));
+      document.getElementById("dashSearch").addEventListener("input", renderTable);
+      document.getElementById("dashStatusFilter").addEventListener("change", e => {
+        statusFilter = e.target.value; updatePills(); renderTable();
+      });
+    }
+
+    function startDashListener() {
+      if (dashUnsubscribe) return;
+      dashUnsubscribe = onSnapshot(
+        query(collection(db, "requests"), orderBy("requestTime", "desc")),
+        snap => {
+          allRows = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+          updatePills(); renderTable();
+        }
+      );
+    }
+
+    function updatePills() {
+      const counts = Object.fromEntries(ALL_STATUSES.map(s => [s, 0]));
+      allRows.forEach(r => { if (r.status in counts) counts[r.status]++; });
+
+      const el = document.getElementById("statusSummary");
+      let html = `<button class="summary-pill ${!statusFilter ? "active" : ""}" data-filter="">
+        <span class="summary-pill-label">Semua</span>
+        <span class="summary-pill-count">${allRows.length}</span></button>`;
+      ALL_STATUSES.forEach(s => {
+        html += `<button class="summary-pill ${statusFilter === s ? "active" : ""}" data-filter="${s}">
+          <span class="badge ${STATUS_CLASS[s] || "badge-normal"}" style="font-size:11.5px">${s}</span>
+          <span class="summary-pill-count">${counts[s]}</span></button>`;
+      });
+      el.innerHTML = html;
+      el.querySelectorAll(".summary-pill").forEach(b => b.addEventListener("click", () => {
+        statusFilter = b.dataset.filter;
+        document.getElementById("dashStatusFilter").value = statusFilter;
+        updatePills(); renderTable();
+      }));
+    }
+
+    function renderTable() {
+      const search   = (document.getElementById("dashSearch").value || "").toLowerCase();
+      const filtered = allRows.filter(r => {
+        const okStatus = !statusFilter || r.status === statusFilter;
+        const okSearch = !search ||
+          (r.requestId    || "").toLowerCase().includes(search) ||
+          (r.requesterName|| "").toLowerCase().includes(search) ||
+          (r.department   || "").toLowerCase().includes(search) ||
+          (r.contactNumber|| "").toLowerCase().includes(search) ||
+          routeStr(r).toLowerCase().includes(search);
+        return okStatus && okSearch;
+      });
+
+      document.getElementById("rowCount").textContent = `${filtered.length} request`;
+
+      let html = `<table style="width:100%;min-width:600px"><thead><tr>
+        <th>Request ID</th><th>Waktu</th><th>Nama Peminta</th><th>Dept</th>
+        <th>No. HP</th><th>Jenis</th><th>Rute / Gudang</th><th>Status</th><th>Aksi</th>
+      </tr></thead><tbody>`;
+
+      if (!filtered.length) {
+        html += `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text-muted)">Tidak ada request ditemukan.</td></tr>`;
+      } else {
+        filtered.forEach(r => {
+          const cls = STATUS_CLASS[r.status] || "badge-normal";
+          html += `<tr>
+            <td><span class="req-id">${esc(r.requestId || "—")}</span></td>
+            <td style="font-size:12px;white-space:nowrap;color:var(--text-muted)">${formatTime(r.requestTime)}</td>
+            <td style="font-weight:500">${esc(r.requesterName || "—")}</td>
+            <td>${esc(r.department || "—")}</td>
+            <td style="white-space:nowrap">${esc(r.contactNumber || "—")}</td>
+            <td><span style="font-size:12px;font-weight:700;color:var(--primary)">${esc(r.requestType || "—")}</span></td>
+            <td style="white-space:nowrap">${esc(routeStr(r))}</td>
+            <td><span class="badge ${cls}">${esc(r.status || "—")}</span></td>
+            <td><button class="btn btn-sm btn-outline edit-btn" data-id="${esc(r._id)}">Edit</button></td>
+          </tr>`;
+        });
+      }
+      html += `</tbody></table>`;
+      document.getElementById("tableWrap").innerHTML = html;
+      document.querySelectorAll(".edit-btn").forEach(b =>
+        b.addEventListener("click", () => {
+          const row = allRows.find(r => r._id === b.dataset.id);
+          if (row) openEditModal(row);
+        })
+      );
+    }
+
+    // ── EDIT MODAL ──
+    const modalEdit = document.getElementById("modalEdit");
+    let editingRow = null, editingStatus = "";
+
+    function openEditModal(row) {
+      editingRow    = row;
+      editingStatus = row.status || "Pending";
+      document.getElementById("editModalTitle").textContent = `Update Status — ${row.requestId}`;
+      document.getElementById("editModalSub").textContent   =
+        `${row.requesterName || ""} · ${row.department || ""} · ${row.requestType || ""} · ${routeStr(row)}`;
+      document.getElementById("editAlert").style.display    = "none";
+      renderStatusOptions();
+      modalEdit.classList.add("open");
+    }
+
+    function renderStatusOptions() {
+      const el = document.getElementById("editStatusOptions");
+      el.innerHTML = ALL_STATUSES.map(s => `
+        <label class="status-radio-row ${editingStatus === s ? "selected" : ""}" data-status="${s}">
+          <input type="radio" name="editStatus" value="${s}" ${editingStatus === s ? "checked" : ""} />
+          <span class="badge ${STATUS_CLASS[s] || "badge-normal"}">${s}</span>
+        </label>`).join("");
+      el.querySelectorAll(".status-radio-row").forEach(lbl =>
+        lbl.addEventListener("click", () => { editingStatus = lbl.dataset.status; renderStatusOptions(); })
+      );
+    }
+
+    document.getElementById("editForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      if (!editingRow) return;
+      const alertEl = document.getElementById("editAlert");
+      const btnEl   = document.getElementById("btnEditSave");
+      alertEl.style.display = "none";
+      btnEl.disabled = true; btnEl.textContent = "Menyimpan…";
+      try {
+        await updateDoc(doc(db, "requests", editingRow._id), {
+          status: editingStatus, lastUpdated: serverTimestamp(),
+        });
+        modalEdit.classList.remove("open");
+      } catch (err) {
+        alertEl.textContent   = "Error: " + err.message;
+        alertEl.style.display = "block";
+      } finally {
+        btnEl.disabled = false; btnEl.textContent = "Simpan";
+      }
+    });
+
+    document.getElementById("btnDeleteRow").addEventListener("click", async () => {
+      if (!editingRow) return;
+      if (!confirm(`Hapus request ${editingRow.requestId}? Tindakan ini tidak dapat dibatalkan.`)) return;
+      try {
+        await deleteDoc(doc(db, "requests", editingRow._id));
+        modalEdit.classList.remove("open");
+      } catch (err) {
+        const alertEl = document.getElementById("editAlert");
+        alertEl.textContent   = "Hapus gagal: " + err.message;
+        alertEl.style.display = "block";
+      }
+    });
+
+    document.getElementById("btnEditClose").addEventListener("click",  () => modalEdit.classList.remove("open"));
+    document.getElementById("btnEditCancel").addEventListener("click", () => modalEdit.classList.remove("open"));
+    modalEdit.addEventListener("click", e => { if (e.target === modalEdit) modalEdit.classList.remove("open"); });
+
+    // ── SHIFT INFO ──
+    function renderShiftInfo() {
+      const now      = new Date();
+      const current  = getCurrentShift(now);
+      const previous = getPreviousShift(current);
+      const next     = getNextShift(current);
+      const timeStr  = now.toLocaleString("id-ID", {
+        weekday:"long", day:"2-digit", month:"long", year:"numeric", hour:"2-digit", minute:"2-digit",
+      });
+      document.getElementById("shiftHeader").innerHTML =
+        `<h1>Informasi Shift</h1>
+         <p style="font-size:13px;color:var(--text-muted)">${esc(timeStr)} — Shift ${current.shiftNumber} (${SHIFT_TIMES[current.shiftNumber]})</p>`;
+      document.getElementById("shiftGrid").innerHTML =
+        buildShiftCard("Shift Sebelumnya", previous, false) +
+        buildShiftCard("Shift Saat Ini",   current,  true)  +
+        buildShiftCard("Shift Berikutnya", next,     false);
+    }
+
+    function buildShiftCard(label, shift, isCurrent) {
+      const groups  = getGroupsForShift(shift.shiftNumber, shift.shiftDate);
+      const dateStr = shift.shiftDate.toLocaleDateString("id-ID", { day:"2-digit", month:"short" });
+      let groupsHtml = groups.length === 0
+        ? `<div style="font-size:13px;color:var(--text-muted);padding:8px 0">—</div>`
+        : groups.map(g =>
+            `<div>
+              <div class="shift-group-badge">Group ${esc(g)}</div>
+              <div class="shift-officers">${
+                SHIFT_GROUPS[g].map(o =>
+                  `<div class="shift-officer">
+                    <span class="shift-officer-name">${esc(o.name)}</span>
+                    <a href="https://wa.me/${esc(o.phone)}" target="_blank" rel="noopener" class="wa-link">📱 WhatsApp</a>
+                  </div>`
+                ).join("")
+              }</div>
+            </div>`
+          ).join("");
+      return `
+        <div class="shift-card${isCurrent ? " current" : ""}">
+          <div class="shift-label${isCurrent ? " current" : ""}">${esc(label)}</div>
+          <div class="shift-number">Shift ${shift.shiftNumber}</div>
+          <div class="shift-time">${SHIFT_TIMES[shift.shiftNumber]} · ${esc(dateStr)}</div>
+          <div class="shift-groups">${groupsHtml}</div>
+        </div>`;
+    }
+  </script>
+</body>
+</html>

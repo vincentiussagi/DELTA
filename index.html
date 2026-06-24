@@ -1,533 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DELTA – Delivery Internal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>DELTA — DCO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./css/style.css" />
-  <style>
-    /* ── Tab nav ─────────────────────────────────────────── */
-    .tab-nav {
-      background: var(--primary-dark);
-      display: flex;
-      gap: 2px;
-      padding: 0 20px;
-      overflow-x: auto;
-    }
-    .tab-btn {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.65);
-      font-size: 13.5px;
-      font-weight: 600;
-      padding: 11px 18px;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      white-space: nowrap;
-      transition: color 0.15s, border-color 0.15s;
-      font-family: inherit;
-    }
-    .tab-btn:hover { color: rgba(255,255,255,0.9); }
-    .tab-btn.active {
-      color: white;
-      border-bottom-color: var(--accent);
-    }
-    .tab-section { display: block; }
-    .tab-section.hidden { display: none !important; }
-  </style>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
-<!-- ── Top Nav ──────────────────────────────────────────────── -->
-<nav class="nav">
-  <span class="nav-brand">
-    DELTA <span class="badge">DCO</span>
-  </span>
-</nav>
+  <!-- ── NAVBAR ── -->
+  <nav class="nav">
+    <span class="nav-brand">DELTA <span class="badge-dco">DCO</span></span>
+  </nav>
 
-<!-- ── Tab Bar ──────────────────────────────────────────────── -->
-<div class="tab-nav">
-  <button class="tab-btn" data-tab="submit">Buat Request</button>
-  <button class="tab-btn" data-tab="tracking">Tracking Request</button>
-  <button class="tab-btn" data-tab="dashboard">Dashboard DCO</button>
-  <button class="tab-btn" data-tab="shift">Informasi Shift</button>
-</div>
+  <!-- ── TAB NAV ── -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="submit">Buat Request</button>
+    <button class="tab-btn" data-tab="dashboard">Dashboard DCO</button>
+    <button class="tab-btn" data-tab="shift">Informasi Shift</button>
+  </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SECTION 1: SUBMIT REQUEST
-════════════════════════════════════════════════════════════ -->
-<div id="submit-section" class="tab-section">
-  <div class="container-sm">
-    <div class="page-header">
-      <h1>Delivery Request</h1>
-      <p>Lengkapi form berikut untuk membuat delivery request. Tidak perlu login.</p>
-    </div>
+  <!-- ════════════════════════════════════════
+       TAB: BUAT REQUEST
+  ════════════════════════════════════════ -->
+  <div id="tab-submit" class="tab-pane">
+    <div class="container-sm">
+      <div class="page-header">
+        <h1>Delivery Request</h1>
+        <p>Lengkapi form berikut untuk membuat delivery request. Tidak perlu login.</p>
+      </div>
 
-    <div class="card">
-      <div class="card-header"><h2>Detail Request</h2></div>
-      <div class="card-body">
-        <div id="formMsg"></div>
+      <div class="card">
+        <div class="card-header"><h2>Detail Request</h2></div>
+        <div class="card-body">
+          <div id="submitAlert" class="alert alert-error" style="display:none"></div>
 
-        <form id="requestForm" novalidate>
-          <div class="form-grid">
+          <form id="requestForm" novalidate>
+            <div class="form-grid">
 
-            <!-- Requester Name -->
-            <div class="form-group">
-              <label for="requesterName">Nama Peminta <span class="req">*</span></label>
-              <input type="text" id="requesterName" name="requesterName" required placeholder="Masukkan Nama" />
-            </div>
+              <!-- Nama Peminta -->
+              <div class="form-group">
+                <label for="requesterName">Nama Peminta <span class="req">*</span></label>
+                <input type="text" id="requesterName" name="requesterName" required placeholder="Masukkan Nama" />
+              </div>
 
-            <!-- Department -->
-            <div class="form-group">
-              <label for="department">Departmen <span class="req">*</span></label>
-              <select id="department" name="department" required>
-                <option value="">— Pilih Departemen  —</option>
-                <option>BU17</option>
-                <option>BU19</option>
-                <option>PM3</option>
-                <option>PM1</option>
-                <option>RMD</option>
-                <option>Other</option>
-              </select>
-              <input type="text" id="departmentOther" name="departmentOther"
-                placeholder="Specify department name" class="hidden" style="margin-top:6px" />
-            </div>
+              <!-- Departemen -->
+              <div class="form-group">
+                <label for="department">Departmen <span class="req">*</span></label>
+                <select id="department" name="department" required>
+                  <option value="">— Pilih Departemen —</option>
+                  <option>BU17</option>
+                  <option>BU19</option>
+                  <option>PM3</option>
+                  <option>PM1</option>
+                  <option>RMD</option>
+                  <option>Other</option>
+                </select>
+                <input type="text" id="departmentOther" placeholder="Nama departemen" style="display:none;margin-top:6px" />
+              </div>
 
-            <!-- Contact Number -->
-            <div class="form-group">
-              <label for="contactNumber">No. HP <span class="req">*</span></label>
-              <input type="tel" id="contactNumber" name="contactNumber" required placeholder="cth. 0812-xxxx-xxxx" />
-            </div>
+              <!-- No. HP -->
+              <div class="form-group full">
+                <label for="contactNumber">No. HP <span class="req">*</span></label>
+                <input type="tel" id="contactNumber" name="contactNumber" required
+                  placeholder="cth. 0812-xxxx-xxxx" style="max-width:260px" />
+              </div>
 
-            <!-- Unit Type -->
-            <div class="form-group">
-              <label for="unitType">Jenis Unit <span class="req">*</span></label>
-              <select id="unitType" name="unitType" required>
-                <option value="">— Pilih Jenis Unit —</option>
-                <option>Tronton Lossbak</option>
-                <option>Colt Diesel</option>
-                <option>Other</option>
-              </select>
-              <input type="text" id="unitTypeOther" name="unitTypeOther"
-                placeholder="Specify unit type" class="hidden" style="margin-top:6px" />
-            </div>
+              <!-- Jenis Pengiriman -->
+              <div class="form-group full">
+                <label>Jenis Pengiriman <span class="req">*</span></label>
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                  <label class="radio-card" id="radioDoNo">
+                    <input type="radio" name="requestType" value="DO NO" />
+                    DO NO
+                  </label>
+                  <label class="radio-card" id="radioIntern">
+                    <input type="radio" name="requestType" value="INTERN" />
+                    INTERN
+                  </label>
+                </div>
+              </div>
 
-            <!-- Request Type -->
-            <div class="form-group full">
-              <label for="requestType">Jenis Pengiriman <span class="req">*</span></label>
-              <select id="requestType" name="requestType" required style="max-width:280px;">
-                <option value="">— Pilih Jenis Pengiriman —</option>
-                <option>DO NO</option>
-                <option>INTERN</option>
-              </select>
-            </div>
-
-            <!-- ── DO NO Section ───────────────────────────── -->
-            <div id="doSection" class="full hidden">
-              <div class="form-section">
-                <div class="form-section-title">Detail DO NO</div>
-                <div class="form-grid">
-
-                  <!-- DO Number -->
-                  <div class="form-group full">
+              <!-- DO NO Section -->
+              <div class="full" id="sectionDoNo" style="display:none">
+                <div class="form-section">
+                  <div class="form-section-title">Detail DO NO</div>
+                  <div class="form-group" style="max-width:320px">
                     <label for="doNumber">Nomor DO <span class="req">*</span></label>
-                    <input type="text" id="doNumber" name="doNumber" placeholder="Masukkan Nomor DO" />
+                    <input type="text" id="doNumber" placeholder="cth. RM/001, RM2/002, OCB/003" />
                   </div>
-
-                  <!-- Origin Mill -->
-                  <div class="form-group">
-                    <label for="originMill">Mill Asal <span class="req">*</span></label>
-                    <select id="originMill" name="originMill">
-                      <option value="">— Pilih Mill Asal —</option>
-                      <option>IKK</option>
-                      <option>PINDO 2</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-
-                  <!-- Destination Mill -->
-                  <div class="form-group">
-                    <label for="destinationMill">Mill Tujuan <span class="req">*</span></label>
-                    <select id="destinationMill" name="destinationMill">
-                      <option value="">— Pilih Mill Tujuan —</option>
-                      <option>IKK</option>
-                      <option>PINDO 2</option>
-                      <option>Other</option>
-                    </select>
-                  </div>
-
-                  <!-- Origin Warehouse (IKK only) -->
-                  <div id="originMillWhGroup" class="form-group hidden">
-                    <label for="originMillWh">Gudang Muat <span class="req">*</span></label>
-                    <select id="originMillWh" name="originMillWh">
-                      <option value="">— Pilih Gudang —</option>
-                      <option>BU17</option>
-                      <option>BU19</option>
-                      <option>PM3</option>
-                      <option>PM1</option>
-                      <option>RMD</option>
-                      <option>Other</option>
-                    </select>
-                    <input type="text" id="originMillWhOther" name="originMillWhOther"
-                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
-                  </div>
-
-                  <!-- Destination Warehouse (IKK only) -->
-                  <div id="destMillWhGroup" class="form-group hidden">
-                    <label for="destMillWh">Gudang Bongkar <span class="req">*</span></label>
-                    <select id="destMillWh" name="destMillWh">
-                      <option value="">— Pilih Gudang —</option>
-                      <option>BU17</option>
-                      <option>BU19</option>
-                      <option>PM3</option>
-                      <option>PM1</option>
-                      <option>RMD</option>
-                      <option>Other</option>
-                    </select>
-                    <input type="text" id="destMillWhOther" name="destMillWhOther"
-                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
-                  </div>
-
+                  <div id="routeDetect" style="margin-top:12px;display:none"></div>
                 </div>
               </div>
-            </div>
 
-            <!-- ── INTERN Section ──────────────────────────── -->
-            <div id="internSection" class="full hidden">
-              <div class="form-section">
-                <div class="form-section-title">Detail INTERN</div>
-                <div class="form-grid">
-
-                  <!-- Origin Warehouse -->
-                  <div class="form-group">
-                    <label for="internOriginWh">Gudang Muat <span class="req">*</span></label>
-                    <select id="internOriginWh" name="internOriginWh">
-                      <option value="">— Pilih Gudang —</option>
-                      <option>BU17</option>
-                      <option>BU19</option>
-                      <option>PM3</option>
-                      <option>PM1</option>
-                      <option>RMD</option>
-                      <option>Other</option>
-                    </select>
-                    <input type="text" id="internOriginWhOther" name="internOriginWhOther"
-                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
+              <!-- INTERN Section -->
+              <div class="full" id="sectionIntern" style="display:none">
+                <div class="form-section">
+                  <div class="form-section-title">Detail INTERN</div>
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label for="internOrigin">Gudang Asal <span class="req">*</span></label>
+                      <input type="text" id="internOrigin" placeholder="cth. Gudang BU17" />
+                    </div>
+                    <div class="form-group">
+                      <label for="internDest">Gudang Tujuan <span class="req">*</span></label>
+                      <input type="text" id="internDest" placeholder="cth. Gudang PM3" />
+                    </div>
                   </div>
-
-                  <!-- Destination Warehouse -->
-                  <div class="form-group">
-                    <label for="internDestWh">Gudang Bongkar <span class="req">*</span></label>
-                    <select id="internDestWh" name="internDestWh">
-                      <option value="">— Pilih Gudang —</option>
-                      <option>BU17</option>
-                      <option>BU19</option>
-                      <option>PM3</option>
-                      <option>PM1</option>
-                      <option>RMD</option>
-                      <option>Other</option>
-                    </select>
-                    <input type="text" id="internDestWhOther" name="internDestWhOther"
-                      placeholder="Tentukan gudang" class="hidden" style="margin-top:6px" />
-                  </div>
-
                 </div>
               </div>
+
+            </div><!-- /form-grid -->
+
+            <div style="margin-top:24px;display:flex;justify-content:flex-end">
+              <button type="submit" id="btnSubmit" class="btn btn-primary" style="min-width:160px">
+                Submit Request
+              </button>
             </div>
-
-            <!-- Notes -->
-            <div class="form-group full">
-              <label for="notes">Keeterangan <span style="color:var(--text-muted);font-weight:400;">Masukkan jenis barang, jumlah ritase, dll.</span></label>
-              <textarea id="notes" name="notes" placeholder="Add any additional information…"></textarea>
-            </div>
-
-          </div><!-- /.form-grid -->
-
-          <div style="margin-top:24px; display:flex; justify-content:flex-end;">
-            <button type="submit" class="btn btn-primary" style="min-width:160px;">
-              Submit Request
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </div><!-- /tab-submit -->
 
-<!-- ═══════════════════════════════════════════════════════════
-     SECTION 2: REQUEST TRACKING
-════════════════════════════════════════════════════════════ -->
-<div id="tracking-section" class="tab-section hidden">
-  <div class="container-sm">
-    <div class="page-header" style="text-align: center;">
-      <h1>Tracking Delivery Request</h1>
-      <p>Masukkan Request ID untuk melihat Status dan informasi delivery.</p>
-    </div>
+  <!-- ════════════════════════════════════════
+       TAB: DASHBOARD DCO
+  ════════════════════════════════════════ -->
+  <div id="tab-dashboard" class="tab-pane" style="display:none">
 
-    <!-- Search Form Card -->
-    <div class="card" style="margin-bottom: 24px;">
-      <div class="card-body" style="padding: 20px;">
-        <form id="trackSearchForm" style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
-          <div class="form-group" style="flex: 1; min-width: 200px;">
-            <label for="trackSearchId">Request ID <span class="req">*</span></label>
-            <input type="text" id="trackSearchId" required placeholder="e.g., DELTA-04062026001" 
-                   style="text-transform: uppercase; font-family: monospace; font-weight: 600; letter-spacing: 0.5px;" />
-          </div>
-          <button type="submit" class="btn btn-primary" style="height: 42px; min-width: 130px; justify-content: center;">
-            Cari Status
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Loading State -->
-    <div id="trackLoading" class="card hidden" style="margin-bottom: 24px;">
-      <div class="card-body" style="text-align: center; padding: 40px 20px;">
-        <div class="spinner" style="margin: 0 auto 12px;"></div>
-        <p style="color: var(--text-muted); font-size: 13.5px;">Mencari detail request...</p>
-      </div>
-    </div>
-
-    <!-- Error State (Not Found) -->
-    <div id="trackError" class="card hidden" style="margin-bottom: 24px; border-color: var(--danger);">
-      <div class="card-body" style="text-align: center; padding: 32px 20px;">
-        <div style="font-size: 32px; margin-bottom: 12px;">⚠️</div>
-        <h3 style="font-size: 15px; font-weight: 700; color: var(--danger); margin-bottom: 6px;">Request Tidak Ditemukan</h3>
-        <p id="trackErrorMsg" style="color: var(--text-muted); font-size: 13px; max-width: 380px; margin: 0 auto;">
-          Tidak ditemukan delivery request dengan ID tersebut. Periksa kembali Request ID yang dimasukkan.
-        </p>
-      </div>
-    </div>
-
-    <!-- Results Container -->
-    <div id="trackResult" class="hidden">
-      <!-- Injected dynamically via app.js -->
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     SECTION 3: DCO DASHBOARD
-════════════════════════════════════════════════════════════ -->
-<div id="dashboard-section" class="tab-section hidden">
-  <div class="container">
-
-    <!-- Login gate (shown when not authenticated) -->
-    <div id="dashLogin">
-      <div style="max-width:400px; margin:48px auto;">
-        <div class="page-header" style="text-align:center;">
+    <!-- Login screen -->
+    <div id="dashLogin" class="container">
+      <div style="max-width:400px;margin:48px auto">
+        <div class="page-header" style="text-align:center">
           <h1>Dashboard DCO</h1>
           <p>Masuk menggunakan akun DCO untuk mengakses Dashboard.</p>
         </div>
         <div class="card">
           <div class="card-header"><h2>Login DCO</h2></div>
           <div class="card-body">
-            <div id="dashLoginMsg"></div>
-            <form id="dashLoginForm" novalidate>
-              <div class="form-group" style="margin-bottom:14px;">
-                <label for="dashEmail">Email</label>
-                <input type="email" id="dashEmail" required placeholder="officer@company.com" autocomplete="email" />
+            <div id="loginAlert" class="alert alert-error" style="display:none"></div>
+            <form id="loginForm" novalidate>
+              <div class="form-group" style="margin-bottom:14px">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required placeholder="officer@company.com" autocomplete="email" />
               </div>
-              <div class="form-group" style="margin-bottom:20px;">
-                <label for="dashPassword">Password</label>
-                <input type="password" id="dashPassword" required placeholder="password" autocomplete="current-password" />
+              <div class="form-group" style="margin-bottom:20px">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required placeholder="password" autocomplete="current-password" />
               </div>
-              <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
-                Masuk
-              </button>
+              <button type="submit" id="btnLogin" class="btn btn-primary" style="width:100%;justify-content:center">Masuk</button>
             </form>
           </div>
         </div>
-        <p style="text-align:center; margin-top:14px; font-size:12px; color:var(--text-muted);">
-          Portal ini hanya dapat diakses oleh petugas DCO.<br />
-          Hubungi atasan Anda untuk meminta akses.
+        <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--text-muted)">
+          Portal ini hanya dapat diakses oleh petugas DCO.
         </p>
       </div>
     </div>
 
-    <!-- Dashboard content (shown when authenticated) -->
-    <div id="dashTable" class="hidden">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-        <div class="page-header" style="margin:0;">
-          <h1>Dashboard DCO</h1>
+    <!-- Dashboard main (shown when logged in) -->
+    <div id="dashMain" style="display:none;padding:24px 20px;max-width:100%">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <div>
+          <h1 style="font-size:22px;font-weight:700;color:var(--primary);margin-bottom:2px">Dashboard DCO</h1>
         </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="font-size:13px; color:var(--text-muted);" id="dashUserEmail"></span>
-          <button id="dashLogout" class="btn btn-sm btn-outline">Keluar</button>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span id="userEmail" style="font-size:13px;color:var(--text-muted)"></span>
+          <button id="btnLogout" class="btn btn-sm btn-outline">Keluar</button>
         </div>
       </div>
 
-      <!-- Status summary pills — live counts, click to filter -->
+      <!-- Status summary pills -->
       <div id="statusSummary" class="status-summary"></div>
 
-      <div class="card">
+      <!-- Table card -->
+      <div class="card" style="width:100%">
         <div class="card-header">
-          <h2>All Delivery Requests</h2>
-          <span id="dashCount" style="font-size:12.5px; color:var(--text-muted);">Loading…</span>
+          <h2>Semua Delivery Request</h2>
+          <span id="rowCount" style="font-size:12.5px;color:var(--text-muted)"></span>
         </div>
-        <div style="padding:14px 20px; border-bottom:1px solid var(--border); display:flex; gap:10px; flex-wrap:wrap;">
-          <input type="search" id="dashSearch" placeholder="Cari ID, peminta, Vendor, atau rute..."
-            style="flex:1; min-width:200px; max-width:320px; border:1.5px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px;" />
-          <select id="dashStatusFilter">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <input type="search" id="dashSearch" placeholder="Cari ID, nama, departemen, atau rute..."
+            style="flex:1;min-width:180px;max-width:340px;border:1.5px solid var(--border);border-radius:6px;padding:8px 12px;font-size:14px;font-family:inherit" />
+          <select id="dashStatusFilter"
+            style="border:1.5px solid var(--border);border-radius:6px;padding:8px 12px;font-size:14px;font-family:inherit">
             <option value="">Semua Status</option>
             <option>Pending</option>
-            <option>Processing</option>
             <option>Completed</option>
             <option>Problem</option>
           </select>
         </div>
-        <div id="dashLoading" class="loading">
-          <div class="spinner"></div> Loading requests…
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Request ID</th>
-                <th>Waktu</th>
-                <th>Peminta</th>
-                <th>Dept</th>
-                <th>Contact</th>
-                <th>Jenis</th>
-                <th>Rute</th>
-                <th>Unit</th>
-                <th>Status</th>
-                <th>Vendor</th>
-                <th>Driver / Vehicle</th>
-                <th>Last Updated</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="dashTbody"></tbody>
-          </table>
+        <div id="tableWrap" style="overflow-x:auto;width:100%">
+          <div class="loading"><div class="spinner"></div> Memuat data...</div>
         </div>
       </div>
-    </div><!-- /#dashTable -->
-
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     SECTION 4: SHIFT INFORMATION
-════════════════════════════════════════════════════════════ -->
-<div id="shift-section" class="tab-section hidden">
-  <div class="container">
-    <div class="page-header">
-      <h1>Informati Shift</h1>
-      <p id="shiftClock" style="font-size:13px;color:var(--text-muted);font-variant-numeric:tabular-nums;"></p>
     </div>
-    <div class="card">
-      <div class="card-header"><h2>DCO On-Duty</h2></div>
-      <div class="card-body">
-        <div id="shiftGrid" class="shift-grid"></div>
+
+  </div><!-- /tab-dashboard -->
+
+  <!-- ════════════════════════════════════════
+       TAB: INFORMASI SHIFT
+  ════════════════════════════════════════ -->
+  <div id="tab-shift" class="tab-pane" style="display:none">
+    <div class="container">
+      <div class="page-header" id="shiftHeader">
+        <h1>Informasi Shift</h1>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>DCO On-Duty</h2></div>
+        <div class="card-body">
+          <div id="shiftGrid" class="shift-grid"></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     EDIT MODAL (DCO Dashboard)
-════════════════════════════════════════════════════════════ -->
-<div id="editModal" class="modal-overlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>Update Request — <span id="modalReqId"></span></h3>
-      <button class="modal-close" id="modalClose">×</button>
+  <!-- ════════════════════════════════════════
+       MODAL: SUCCESS
+  ════════════════════════════════════════ -->
+  <div id="modalSuccess" class="modal-overlay">
+    <div class="modal" style="max-width:480px">
+      <div class="modal-body" style="padding:28px 24px">
+        <div class="success-circle">✓</div>
+        <h3 style="font-size:18px;font-weight:700;color:#15803d;text-align:center;margin-bottom:6px">
+          Request Berhasil Dibuat!
+        </h3>
+        <p style="text-align:center;color:var(--text-muted);font-size:13.5px;margin-bottom:20px">
+          Request delivery Anda telah berhasil dibuat.
+        </p>
+
+        <div style="background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:16px;text-align:center;margin-bottom:20px">
+          <div style="font-size:12px;color:#15803d;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Request ID</div>
+          <div id="successReqId" style="font-size:22px;font-weight:800;color:#15803d;font-family:monospace;letter-spacing:2px;margin-bottom:10px"></div>
+          <button id="btnCopyId" class="btn btn-sm"
+            style="background:white;border:1.5px solid #86efac;color:#15803d;font-weight:700">
+            Salin Request ID
+          </button>
+        </div>
+
+        <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:10px;padding:16px;margin-bottom:20px">
+          <div style="font-size:13px;font-weight:700;color:#1e40af;margin-bottom:8px">📋 Langkah Selanjutnya</div>
+          <p style="font-size:13px;color:#1e3a8a;line-height:1.6;margin:0">
+            Silakan salin <strong>Request ID</strong> di atas, lalu hubungi DCO yang sedang bertugas untuk proses lebih lanjut.
+          </p>
+        </div>
+
+        <div id="successOfficers" style="border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px"></div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button id="btnSuccessShift" class="btn btn-primary" style="justify-content:center">Informasi Shift DCO</button>
+          <button id="btnSuccessNew" class="btn btn-outline" style="justify-content:center">Buat Request Baru</button>
+        </div>
+      </div>
     </div>
-    <form id="editForm">
-      <div class="modal-body">
-        <p style="color:var(--text-muted); font-size:13px; margin-bottom:18px;" id="modalRoute"></p>
-        <div id="modalMsg" style="color:var(--danger); font-size:13px; margin-bottom:10px;"></div>
-        <div class="form-grid" style="gap:14px;">
-          <div class="form-group full">
-            <label for="editStatus">Status <span class="req">*</span></label>
-            <select id="editStatus">
-              <option>Pending</option>
-              <option>Processing</option>
-              <option>Completed</option>
-              <option>Problem</option>
-            </select>
-          </div>
-          <div class="form-group full">
-            <label for="editVendor">Vendor</label>
-            <input type="text" id="editVendor" placeholder="Vendor name" />
-          </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       MODAL: EDIT (DASHBOARD)
+  ════════════════════════════════════════ -->
+  <div id="modalEdit" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="editModalTitle">Update Status</h3>
+        <button class="modal-close" id="btnEditClose">×</button>
+      </div>
+      <form id="editForm">
+        <div class="modal-body">
+          <p id="editModalSub" style="color:var(--text-muted);font-size:13px;margin-bottom:18px"></p>
+          <div id="editAlert" style="color:var(--danger);font-size:13px;margin-bottom:10px;display:none"></div>
           <div class="form-group">
-            <label for="editVehicle">Nopol</label>
-            <input type="text" id="editVehicle" placeholder="e.g. B 1234 ABC" />
-          </div>
-          <div class="form-group">
-            <label for="editDriver">Nama Supir</label>
-            <input type="text" id="editDriver" placeholder="Driver full name" />
-          </div>
-          <div class="form-group full">
-            <label for="editDriverPhone">No. HP Supir</label>
-            <input type="tel" id="editDriverPhone" placeholder="e.g. 0812-xxxx-xxxx" />
-          </div>
-          <div class="form-group full">
-            <label for="editNotes">Notes</label>
-            <textarea id="editNotes" style="min-height:64px;" placeholder="Internal notes…"></textarea>
+            <label>Status <span class="req">*</span></label>
+            <div id="editStatusOptions" style="display:flex;flex-direction:column;gap:10px;margin-top:4px"></div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer" style="justify-content:space-between;">
-        <button type="button" class="btn btn-danger btn-sm" id="deleteRequestBtn">
-          Delete
-        </button>
-        <div style="display:flex;gap:10px;">
-          <button type="button" class="btn btn-outline" id="cancelEdit">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Changes</button>
+        <div class="modal-footer" style="justify-content:space-between">
+          <button type="button" id="btnDeleteRow" class="btn btn-danger btn-sm">Hapus</button>
+          <div style="display:flex;gap:10px">
+            <button type="button" id="btnEditCancel" class="btn btn-outline">Batal</button>
+            <button type="submit" id="btnEditSave" class="btn btn-primary">Simpan</button>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     SUCCESS MODAL (Submit Request)
-════════════════════════════════════════════════════════════ -->
-<div id="successModal" class="modal-overlay">
-  <div class="modal">
-    <div class="modal-body" style="text-align:center; padding:36px 28px;">
-      <div class="success-circle">✓</div>
-      <h3 style="font-size:18px; font-weight:700; color:#15803d; margin-bottom:8px;">Request Submitted!</h3>
-      <p style="color:#555; margin-bottom:20px;">Your delivery request has been submitted successfully.</p>
-      <p style="font-size:13px; color:#888; margin-bottom:8px;">Request ID</p>
-      <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 24px; margin-bottom:20px; display:inline-block;">
-        <span id="successId" style="font-size:24px; font-weight:800; color:#15803d; font-family:monospace; letter-spacing:2px;"></span>
-      </div>
-      <p style="font-size:12.5px; color:#888; margin-bottom:24px;">
-        Save this ID to track your request on the <strong>Request Tracking</strong> tab.
-      </p>
-      <div style="display:flex; justify-content:center; margin-bottom:12px;">
-        <button id="viewTrackingBtn" class="btn btn-primary">
-          View Tracking
-        </button>
-      </div>
-      <div style="display:flex; gap:12px; justify-content:center;">
-        <button id="newRequestBtn" class="btn btn-outline">
-          Submit Another Request
-        </button>
-        <button id="shiftInfoBtn" class="btn btn-primary">
-          Informasi Shift DCO
-        </button>
-      </div>      
-      <div style="display:flex; justify-content:center; margin-top:16px;">
-        <button id="copyRequestIdBtn" class="btn btn-outline">
-          Copy Request ID
-        </button>
-      </div>      
-      <div style="display:flex; justify-content:center; margin-top:12px;">
-        <button id="closeSuccessBtn" class="btn btn-outline">
-          Close
-        </button>
-      </div>
+      </form>
     </div>
   </div>
-</div>
 
-<script type="module" src="./js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

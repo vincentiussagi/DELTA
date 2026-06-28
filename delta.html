@@ -360,13 +360,9 @@
               </div>
 
               <div class="form-group">
-                <label for="department">Departmen <span class="req">*</span></label>
-                <select id="department" required>
-                  <option value="">— Pilih Departemen —</option>
-                  <option>BU17</option><option>BU19</option><option>PM3</option>
-                  <option>PM1</option><option>RMD</option><option>Other</option>
-                </select>
-                <input type="text" id="departmentOther" placeholder="Nama departemen" style="display:none;margin-top:6px" />
+                <label for="department">Departemen <span class="req">*</span></label>
+                <input type="text" id="department" required placeholder="Masukkan Nama Departemen" />
+                <span style="font-size:12px;color:var(--text-muted)">Contoh: RMD, BU17, PM1, PM3, BU19</span>
               </div>
 
               <div class="form-group full">
@@ -393,7 +389,7 @@
                   <div class="form-section-title">Detail DO NO</div>
                   <div class="form-group" style="max-width:320px">
                     <label for="doNumber">Nomor DO <span class="req">*</span></label>
-                    <input type="text" id="doNumber" placeholder="cth. RM/001, RM2/002, OCB/003" />
+                    <input type="text" id="doNumber" placeholder="cth. RM/, RM2/, OCB/, OBD/, RM3/" />
                   </div>
                   <div id="routeDetect" style="margin-top:12px;display:none"></div>
                 </div>
@@ -544,6 +540,32 @@
   <!-- ══════════════════════════════════════════
        MODAL: EDIT STATUS
   ══════════════════════════════════════════ -->
+  <!-- ══════════════════════════════════════════
+       MODAL: DELETE CONFIRM
+  ══════════════════════════════════════════ -->
+  <div id="modalDelete" class="modal-overlay">
+    <div class="modal" style="max-width:400px">
+      <div class="modal-header">
+        <h3 style="color:var(--danger)">Hapus Request</h3>
+        <button class="modal-close" id="btnDeleteClose">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:14px;color:var(--text);margin-bottom:6px">
+          Anda akan menghapus request:
+        </p>
+        <div id="deleteTargetId" style="font-family:monospace;font-size:16px;font-weight:800;color:var(--danger);margin-bottom:14px"></div>
+        <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6">
+          Tindakan ini <strong>tidak dapat dibatalkan</strong>. Data request akan hilang secara permanen dari sistem.
+        </p>
+        <div id="deleteAlert" style="color:var(--danger);font-size:13px;margin-top:12px;display:none"></div>
+      </div>
+      <div class="modal-footer" style="justify-content:flex-end">
+        <button type="button" id="btnDeleteCancel" class="btn btn-outline">Batal</button>
+        <button type="button" id="btnDeleteConfirm" class="btn btn-danger">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
   <div id="modalEdit" class="modal-overlay">
     <div class="modal">
       <div class="modal-header">
@@ -573,7 +595,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
     import {
-      getFirestore, collection, addDoc, doc, setDoc, runTransaction,
+      getFirestore, collection, addDoc, doc, runTransaction,
       serverTimestamp, query, orderBy, onSnapshot, updateDoc, deleteDoc,
     } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
     import {
@@ -670,7 +692,7 @@
 
     function detectRoute(doNumber) {
       const u = (doNumber || "").trim().toUpperCase();
-      if (u.startsWith("RM2/") || u.startsWith("OCB/")) return { originMill: "PD2", destinationMill: "IKK" };
+      if (u.startsWith("RM2/") || u.startsWith("OCB/") || u.startsWith("OBD/") || u.startsWith("RM3/")) return { originMill: "PD2", destinationMill: "IKK" };
       if (u.startsWith("RM/"))                            return { originMill: "IKK", destinationMill: "PD2" };
       return null;
     }
@@ -733,19 +755,12 @@
 
     // ── SUBMIT FORM ──
     const form         = document.getElementById("requestForm");
-    const deptSel      = document.getElementById("department");
-    const deptOther    = document.getElementById("departmentOther");
     const sectionDoNo  = document.getElementById("sectionDoNo");
     const sectionInt   = document.getElementById("sectionIntern");
     const doInput      = document.getElementById("doNumber");
     const routeDetect  = document.getElementById("routeDetect");
     const submitAlert  = document.getElementById("submitAlert");
     const btnSubmit    = document.getElementById("btnSubmit");
-
-    deptSel.addEventListener("change", () => {
-      deptOther.style.display = deptSel.value === "Other" ? "block" : "none";
-      if (deptSel.value !== "Other") deptOther.value = "";
-    });
 
     function updateRadioCards() {
       const checked = form.querySelector("input[name='requestType']:checked");
@@ -780,7 +795,7 @@
           <span style="font-size:16px">⚠️</span>
           <div>
             <span style="font-size:12px;color:#854d0e;font-weight:700;display:block">Rute Tidak Terdeteksi</span>
-            <span style="font-size:13px;color:#854d0e">Nomor DO harus diawali dengan RM/, RM2/, atau OCB/</span>
+            <span style="font-size:13px;color:#854d0e">Nomor DO harus diawali dengan RM/, RM2/, OCB/, OBD/, atau RM3/</span>
           </div></div>`;
       }
     });
@@ -790,7 +805,7 @@
       submitAlert.style.display = "none";
 
       const name   = document.getElementById("requesterName").value.trim();
-      const dept   = deptSel.value === "Other" ? deptOther.value.trim() : deptSel.value;
+      const dept   = document.getElementById("department").value.trim();
       const phone  = document.getElementById("contactNumber").value.trim();
       const typeEl = form.querySelector("input[name='requestType']:checked");
       const type   = typeEl ? typeEl.value : "";
@@ -828,12 +843,8 @@
           originWarehouse, destinationWarehouse,
           status: "Pending", lastUpdated: serverTimestamp(),
         });
-        await setDoc(doc(db, "publicTracking", requestId), {
-          requestId, status: "Pending", updatedAt: serverTimestamp(),
-        });
 
         form.reset();
-        deptOther.style.display = "none";
         sectionDoNo.style.display = sectionInt.style.display = "none";
         routeDetect.style.display = "none";
         document.querySelectorAll(".radio-card").forEach(l => l.classList.remove("selected"));
@@ -1081,18 +1092,43 @@
       }
     });
 
-    document.getElementById("btnDeleteRow").addEventListener("click", async () => {
+    // ── DELETE CONFIRM MODAL ──
+    const modalDelete = document.getElementById("modalDelete");
+
+    function closeDeleteModal() {
+      modalDelete.classList.remove("open");
+      document.getElementById("deleteAlert").style.display = "none";
+      const btn = document.getElementById("btnDeleteConfirm");
+      btn.disabled = false; btn.textContent = "Ya, Hapus";
+    }
+
+    document.getElementById("btnDeleteRow").addEventListener("click", () => {
       if (!editingRow) return;
-      if (!confirm(`Hapus request ${editingRow.requestId}? Tindakan ini tidak dapat dibatalkan.`)) return;
+      document.getElementById("deleteTargetId").textContent = editingRow.requestId;
+      document.getElementById("deleteAlert").style.display = "none";
+      modalDelete.classList.add("open");
+    });
+
+    document.getElementById("btnDeleteConfirm").addEventListener("click", async () => {
+      if (!editingRow) return;
+      const alertEl = document.getElementById("deleteAlert");
+      const btnEl   = document.getElementById("btnDeleteConfirm");
+      alertEl.style.display = "none";
+      btnEl.disabled = true; btnEl.textContent = "Menghapus…";
       try {
         await deleteDoc(doc(db, "requests", editingRow._id));
+        closeDeleteModal();
         modalEdit.classList.remove("open");
       } catch (err) {
-        const alertEl = document.getElementById("editAlert");
         alertEl.textContent   = "Hapus gagal: " + err.message;
         alertEl.style.display = "block";
+        btnEl.disabled = false; btnEl.textContent = "Ya, Hapus";
       }
     });
+
+    document.getElementById("btnDeleteCancel").addEventListener("click", closeDeleteModal);
+    document.getElementById("btnDeleteClose").addEventListener("click",  closeDeleteModal);
+    modalDelete.addEventListener("click", e => { if (e.target === modalDelete) closeDeleteModal(); });
 
     document.getElementById("btnEditClose").addEventListener("click",  () => modalEdit.classList.remove("open"));
     document.getElementById("btnEditCancel").addEventListener("click", () => modalEdit.classList.remove("open"));

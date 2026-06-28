@@ -371,6 +371,15 @@
               </div>
 
               <div class="form-group full">
+                <label for="unitType">Jenis Unit <span class="req">*</span></label>
+                <select id="unitType" required style="max-width:260px">
+                  <option value="">— Pilih Jenis Unit —</option>
+                  <option value="Tronton Lossbak">Tronton Lossbak</option>
+                  <option value="Colt Diesel">Colt Diesel</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
                 <label>Jenis Pengiriman <span class="req">*</span></label>
                 <div style="display:flex;gap:12px;flex-wrap:wrap">
                   <label class="radio-card">
@@ -543,7 +552,7 @@
   <!-- ══════════════════════════════════════════
        MODAL: DELETE CONFIRM
   ══════════════════════════════════════════ -->
-  <div id="modalDelete" class="modal-overlay">
+  <div id="modalDelete" class="modal-overlay" style="z-index:300">
     <div class="modal" style="max-width:400px">
       <div class="modal-header">
         <h3 style="color:var(--danger)">Hapus Request</h3>
@@ -804,13 +813,14 @@
       e.preventDefault();
       submitAlert.style.display = "none";
 
-      const name   = document.getElementById("requesterName").value.trim();
-      const dept   = document.getElementById("department").value.trim();
-      const phone  = document.getElementById("contactNumber").value.trim();
-      const typeEl = form.querySelector("input[name='requestType']:checked");
-      const type   = typeEl ? typeEl.value : "";
+      const name     = document.getElementById("requesterName").value.trim();
+      const dept     = document.getElementById("department").value.trim();
+      const phone    = document.getElementById("contactNumber").value.trim();
+      const unitType = document.getElementById("unitType").value;
+      const typeEl   = form.querySelector("input[name='requestType']:checked");
+      const type     = typeEl ? typeEl.value : "";
 
-      if (!name || !dept || !phone || !type) {
+      if (!name || !dept || !phone || !unitType || !type) {
         showAlert(submitAlert, "Harap lengkapi semua field yang diperlukan."); return;
       }
 
@@ -839,6 +849,7 @@
         await addDoc(collection(db, "requests"), {
           requestId, requestTime: serverTimestamp(),
           requesterName: name, department: dept, contactNumber: phone,
+          unitType,
           requestType: type, doNumber, originMill, destinationMill,
           originWarehouse, destinationWarehouse,
           status: "Pending", lastUpdated: serverTimestamp(),
@@ -1014,11 +1025,11 @@
 
       let html = `<table style="width:100%;min-width:600px"><thead><tr>
         <th>Request ID</th><th>Waktu</th><th>Nama Peminta</th><th>Dept</th>
-        <th>No. HP</th><th>Jenis</th><th>Rute / Gudang</th><th>Status</th><th>Aksi</th>
+        <th>No. HP</th><th>Jenis</th><th>Jenis Unit</th><th>Rute / Gudang</th><th>Status</th><th>Aksi</th>
       </tr></thead><tbody>`;
 
       if (!filtered.length) {
-        html += `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text-muted)">Tidak ada request ditemukan.</td></tr>`;
+        html += `<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--text-muted)">Tidak ada request ditemukan.</td></tr>`;
       } else {
         filtered.forEach(r => {
           const cls = STATUS_CLASS[r.status] || "badge-normal";
@@ -1029,6 +1040,7 @@
             <td>${esc(r.department || "—")}</td>
             <td style="white-space:nowrap">${esc(r.contactNumber || "—")}</td>
             <td><span style="font-size:12px;font-weight:700;color:var(--primary)">${esc(r.requestType || "—")}</span></td>
+            <td style="font-size:13px">${esc(r.unitType || "—")}</td>
             <td style="white-space:nowrap">${esc(routeStr(r))}</td>
             <td><span class="badge ${cls}">${esc(r.status || "—")}</span></td>
             <td><button class="btn btn-sm btn-outline edit-btn" data-id="${esc(r._id)}">Edit</button></td>
